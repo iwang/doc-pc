@@ -1,6 +1,10 @@
- import 'babel-core/polyfill';
- import { Router, Route, Link } from 'react-router';
- import DiagnosePage from './components/DiagnosePage.jsx';
+import 'babel-core/polyfill';
+import { Router, Route, Link } from 'react-router';
+import DiagnosePage from './components/DiagnosePage.jsx';
+import Top from './components/Top.jsx';
+import React from 'react';
+
+
 (function () {
   let React = require('react');
   let ReactDOM = require('react-dom');
@@ -24,13 +28,23 @@
   // For more details see: https://facebook.github.io/react/docs/top-level-api.html#react.render
   //ReactDOM.render(<Main />, document.getElementById('app'));
 
+const App = React.createClass({
+  render() {
+    return (
+      <div>
+      <Top></Top>
+      {this.props.children}
+      </div>
+    );
+  },
+});
+
 ReactDOM.render(
   <Router>
-    <Route path="/" component={PatientTable} >
+    <Route path="/" component={App}>
+      <Route path="patients" component={PatientTable} />
       <Route path="diagnose" component={DiagnosePage} />
     </Route>
-      
-    
   </Router>,
   document.getElementById('app')
 );

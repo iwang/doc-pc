@@ -40,7 +40,6 @@ const PatientTable = React.createClass({
 			</TableBody>
 
 			</Table>
-			<div>{this.props.children || "Welcome to your Inbox"}</div>
 			</div>
 			
 			
