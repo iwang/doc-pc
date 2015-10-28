@@ -1,8 +1,8 @@
-html {
-  font-family: 'Roboto', sans-serif;
+body {
+  font: 12px Helvetica,Arial,sans-serif;
+  line-height: 20px;
 }
 
-body {
-  font-size: 13px;
-  line-height: 20px;
+input {
+	font-family: Helvetica,Arial,sans-serif;
 }

@@ -9,13 +9,13 @@ const Top = React.createClass({
 	render() {
 		return (
 			<Tabs>
-		    	<Tab label="添加患者">
+		    	<Tab label="Add">
 
 				</Tab>
-		    	<Tab label="我的药方" route="/diagnose" onActive={this._handleTabActive} >
+		    	<Tab label="drug" route="/diagnose" onActive={this._handleTabActive} >
 		      
 		    	</Tab>
-		    	<Tab label="就诊历史" route="/patients" onActive={this._handleTabActive} >
+		    	<Tab label="history" route="/patients" onActive={this._handleTabActive} >
 		      
 		    	</Tab>
 		  	</Tabs>
