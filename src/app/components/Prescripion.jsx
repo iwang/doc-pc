@@ -65,7 +65,7 @@ export default class Prescripion extends React.Component {
 						</Col>
 					</Row>
 					<Row>
-						<Button bsSize="small">Upload
+						<Button bsSize="small" style={{position: 'relative'}}>Upload
 							<input type="file" ref="imageFiles"
 					    		style={sty.imageInput} multiple
 					    		onChange={this._handleFileSelect.bind(this)}></input>
