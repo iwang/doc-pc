@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Grid, Row, Col, Input, Button} from 'react-bootstrap';
+import {Grid, Row, Col, Input, Button, Thumbnail} from 'react-bootstrap';
 
 export default class Prescripion extends React.Component {
 	getStyles() {
@@ -104,7 +104,7 @@ export default class Prescripion extends React.Component {
 		    	let _this = this;
                 reader.onload = function (e) {
                 	 images.push(
-                    	<Col sm={3}><img style={sty.image} src={e.target.result} /></Col>
+                    	<Col sm={3}><Thumbnail  src={e.target.result} /></Col>
                     );
                 	_this.setState({images: images});
                 };
