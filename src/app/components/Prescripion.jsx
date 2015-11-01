@@ -1,8 +1,20 @@
 import React from 'react';
+import DrugTable from './DrugTable.jsx';
+import {findDOMNode} from 'react-dom';
+import SearchDrugInput from './SearchDrugInput.jsx';
 
-import {Grid, Row, Col, Input, Button, Thumbnail} from 'react-bootstrap';
+import {Grid, Row, Col, Input, Button, Thumbnail, Overlay} from 'react-bootstrap';
 
 export default class Prescripion extends React.Component {
+	getDrags() {
+		return [
+			{code:"3", name: "drug1", weight: "1", addition: "no"},
+			{code:"3", name: "drug1", weight: "1", addition: "no"},
+			{code:"3", name: "drug1", weight: "1", addition: "no"},
+			
+
+		]
+	}
 	getStyles() {
 		let sty = {
 			imageInput: {
@@ -23,9 +35,19 @@ export default class Prescripion extends React.Component {
 		      textarea: {
 		      	height: "100",
 		      },
+		      toolbox : {
+		      	float: "right",
+		      	marginLeft: "5",
+		      },
+		      label: {
+		      	width: "85",
+		      	float: "left",
+		      },
+		      
 		};
 		return sty;
 	}
+	
 
 	constructor(props) {
 	    super(props);
@@ -37,6 +59,7 @@ export default class Prescripion extends React.Component {
 
 	render() {
 		let sty = this.getStyles();
+		let drugs = this.getDrags();
 		return (
 			<div>
 				<Grid>
@@ -54,6 +77,22 @@ export default class Prescripion extends React.Component {
 
 						<Col sm={4}>
 							<Input type="text" placeholder="Phone" />
+						</Col>
+					</Row>
+					<Row>
+						<Col sm={1}>
+							<label>Sex: </label>
+						</Col>
+						<Col sm={4}>
+							<Input type="text" placeholder="Sex" />
+						</Col>
+						
+						<Col sm={1}>
+							<label>age: </label>
+						</Col>
+
+						<Col sm={4}>
+							<Input type="text" placeholder="age" />
 						</Col>
 					</Row>
 					<Row>
@@ -83,15 +122,40 @@ export default class Prescripion extends React.Component {
 							<Input type="textarea" style={sty.textarea} placeholder="Enter texts" />
 						</Col>
 					</Row>
+					<Row>
+						
+						<Col sm={1}>
+							<label style={sty.label}>Prescription: </label>
+						</Col>
+						
+						<Col lg={11}>
+						<Button bsStyle="primary" bsSize="small" style={sty.toolbox}>Add</Button>
+
+						<Button bsStyle="primary" bsSize="small" style={sty.toolbox}>Import</Button>
+					
+						<Button bsStyle="primary" bsSize="small" style={sty.toolbox}>Save As</Button>
+						
+						<SearchDrugInput />
+						
+						</Col>	
+					</Row>
+
+					<Row>
+						<Col lg={5}>
+							<DrugTable drugs={drugs} />
+						</Col>
+						<Col lg={5}>
+							<DrugTable drugs={drugs} />
+						</Col>
+					</Row>
 				</Grid>
+				
 				
 			</div>
 		);
 	}
 
 	_handleFileSelect(evt) {
-		console.log(evt);
-		console.log(this);
 		let sty = this.getStyles();
 		let f;
 		let images = this.state.images;

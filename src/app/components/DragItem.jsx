@@ -13,7 +13,7 @@ export const DragItem = React.createClass({
 		let options = getDragOptions();
 		return (
 			<div>
-				drug <TextField hintText={"this.prop.dragName"} /> g
+				drug <TextField hintText={"this.props.dragName"} /> g
 				<SelectField
 					  valueMember="id"
 					  displayMember="name"
