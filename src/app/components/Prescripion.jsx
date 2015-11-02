@@ -40,7 +40,7 @@ export default class Prescripion extends React.Component {
 		      	marginLeft: "5",
 		      },
 		      label: {
-		      	width: "85",
+		      	width: "90",
 		      	float: "left",
 		      },
 		      
@@ -68,7 +68,7 @@ export default class Prescripion extends React.Component {
 							<label>Name: </label>
 						</Col>
 						<Col sm={4}>
-							<Input type="text" placeholder="Enter text" />
+							<Input standalone type="text" placeholder="Enter text" />
 						</Col>
 						
 						<Col sm={1}>
@@ -76,7 +76,7 @@ export default class Prescripion extends React.Component {
 						</Col>
 
 						<Col sm={4}>
-							<Input type="text" placeholder="Phone" />
+							<Input standalone type="text" placeholder="Phone" />
 						</Col>
 					</Row>
 					<Row>
@@ -84,7 +84,7 @@ export default class Prescripion extends React.Component {
 							<label>Sex: </label>
 						</Col>
 						<Col sm={4}>
-							<Input type="text" placeholder="Sex" />
+							<Input standalone type="text" placeholder="Sex" />
 						</Col>
 						
 						<Col sm={1}>
@@ -92,7 +92,7 @@ export default class Prescripion extends React.Component {
 						</Col>
 
 						<Col sm={4}>
-							<Input type="text" placeholder="age" />
+							<Input standalone type="text" placeholder="age" />
 						</Col>
 					</Row>
 					<Row>
@@ -100,12 +100,12 @@ export default class Prescripion extends React.Component {
 							<label>Status: </label>
 						</Col>
 						<Col sm={9}>
-							<Input type="textarea" style={sty.textarea} placeholder="Enter texts" />
+							<Input standalone type="textarea" style={sty.textarea} placeholder="Enter texts" />
 						</Col>
 					</Row>
 					<Row>
 						<Button bsSize="small" style={{position: 'relative'}}>Upload
-							<input type="file" ref="imageFiles"
+							<input standalone type="file" ref="imageFiles"
 					    		style={sty.imageInput} multiple
 					    		onChange={this._handleFileSelect.bind(this)}></input>
 						</Button>
@@ -119,7 +119,7 @@ export default class Prescripion extends React.Component {
 							<label>Result: </label>
 						</Col>
 						<Col sm={9}>
-							<Input type="textarea" style={sty.textarea} placeholder="Enter texts" />
+							<Input standalone type="textarea" style={sty.textarea} placeholder="Enter texts" />
 						</Col>
 					</Row>
 					<Row>
@@ -128,15 +128,13 @@ export default class Prescripion extends React.Component {
 							<label style={sty.label}>Prescription: </label>
 						</Col>
 						
-						<Col lg={11}>
-						<Button bsStyle="primary" bsSize="small" style={sty.toolbox}>Add</Button>
+						<Col sm={9}>
+							<SearchDrugInput addDrugCB={this._addDrug}/>
+							<Button bsStyle="primary" bsSize="small" style={sty.toolbox}>Add</Button>
 
-						<Button bsStyle="primary" bsSize="small" style={sty.toolbox}>Import</Button>
-					
-						<Button bsStyle="primary" bsSize="small" style={sty.toolbox}>Save As</Button>
+							<Button bsStyle="primary" bsSize="small" style={sty.toolbox}>Import</Button>
 						
-						<SearchDrugInput />
-						
+							<Button bsStyle="primary" bsSize="small" style={sty.toolbox}>Save As</Button>
 						</Col>	
 					</Row>
 
@@ -153,6 +151,10 @@ export default class Prescripion extends React.Component {
 				
 			</div>
 		);
+	}
+
+	_addDrug(drug) {
+		console.log("drug added", drug);
 	}
 
 	_handleFileSelect(evt) {
