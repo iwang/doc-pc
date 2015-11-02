@@ -6,15 +6,6 @@ import SearchDrugInput from './SearchDrugInput.jsx';
 import {Grid, Row, Col, Input, Button, Thumbnail, Overlay} from 'react-bootstrap';
 
 export default class Prescripion extends React.Component {
-	getDrags() {
-		return [
-			{code:"3", name: "drug1", weight: "1", addition: "no"},
-			{code:"3", name: "drug1", weight: "1", addition: "no"},
-			{code:"3", name: "drug1", weight: "1", addition: "no"},
-			
-
-		]
-	}
 	getStyles() {
 		let sty = {
 			imageInput: {
@@ -53,13 +44,25 @@ export default class Prescripion extends React.Component {
 	    super(props);
 	    this.state = {images: [], 
 			patentName: "james",
+			drugs: [],
 		};
 		
 	}
 
 	render() {
 		let sty = this.getStyles();
-		let drugs = this.getDrags();
+		let drugs = this.state.drugs;
+		let leftDrugs = [];
+		let rightDrugs = [];
+		let index = 0;
+		drugs.forEach(drug => {
+			if (index % 2 === 0) {
+				leftDrugs.push(drug);
+			} else {
+				rightDrugs.push(drug);
+			}
+			index++;
+		});
 		return (
 			<div>
 				<Grid>
@@ -129,32 +132,31 @@ export default class Prescripion extends React.Component {
 						</Col>
 						
 						<Col sm={9}>
-							<SearchDrugInput addDrugCB={this._addDrug}/>
+							<SearchDrugInput addDrugCB={this._addDrug.bind(this)}/>
 							<Button bsStyle="primary" bsSize="small" style={sty.toolbox}>Add</Button>
 
 							<Button bsStyle="primary" bsSize="small" style={sty.toolbox}>Import</Button>
 						
 							<Button bsStyle="primary" bsSize="small" style={sty.toolbox}>Save As</Button>
 						</Col>	
-					</Row>
-
-					<Row>
-						<Col lg={5}>
-							<DrugTable drugs={drugs} />
-						</Col>
-						<Col lg={5}>
-							<DrugTable drugs={drugs} />
-						</Col>
-					</Row>
+					</Row>					
 				</Grid>
-				
-				
+				<Row>
+					<Col lg={5}>
+						<DrugTable drugs={leftDrugs} />
+					</Col>
+					<Col lg={5}>
+						<DrugTable drugs={rightDrugs} />
+					</Col>
+				</Row>
+
 			</div>
 		);
 	}
 
 	_addDrug(drug) {
-		console.log("drug added", drug);
+		this.state.drugs.push(drug);
+		this.setState({drugs: this.state.drugs});
 	}
 
 	_handleFileSelect(evt) {

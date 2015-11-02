@@ -98,8 +98,6 @@ export default class SearchDrugInput extends React.Component {
 	}
 
 	selected(drug) {
-		
-		console.log("selected", drug);
 		this.props.addDrugCB(drug);
 		this._close();
 	}
