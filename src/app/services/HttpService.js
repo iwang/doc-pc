@@ -6,9 +6,10 @@ export default class HttpService {
 		let absUrl = prefix + apiUrl;
 		let token = localStorage.getItem("token");
 		let doctor = localStorage.getItem("doctor");
-		console.log("did", data["did"]);
+		
 		if (doctor && data["did"] === undefined) {
 			data["did"] = doctor.did;
+			console.log("did", doctor.did);
 		}
 
 		$.ajax({

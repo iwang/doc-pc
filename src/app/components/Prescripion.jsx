@@ -3,7 +3,7 @@ import DrugTable from './DrugTable.jsx';
 import {findDOMNode} from 'react-dom';
 import SearchDrugInput from './SearchDrugInput.jsx';
 
-import {Grid, Row, Col, Input, Button, Thumbnail, Overlay} from 'react-bootstrap';
+import {Grid, Row, Col, Input, Button, Thumbnail, Glyphicon} from 'react-bootstrap';
 
 export default class Prescripion extends React.Component {
 	getStyles() {
@@ -142,10 +142,10 @@ export default class Prescripion extends React.Component {
 					</Row>					
 				</Grid>
 				<Row>
-					<Col lg={5}>
+					<Col sm={6}>
 						<DrugTable drugs={leftDrugs} />
 					</Col>
-					<Col lg={5}>
+					<Col sm={6}>
 						<DrugTable drugs={rightDrugs} />
 					</Col>
 				</Row>

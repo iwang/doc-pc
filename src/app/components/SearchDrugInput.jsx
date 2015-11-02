@@ -25,20 +25,17 @@ export default class SearchDrugInput extends React.Component {
 
 	_handleSearchInputChange() {
 		let keyword = this.refs.drugInput.getValue();
-		const tmp = [
-		{title: "james"}, {title: "jason"}, {title: "jakon"}, {title: "jaksone"}, 
-		]
-
+		
 		if (keyword.trim() !== "") {
-			// $post("medicine/search", {kw: keyword}, function(result){
-			// 	this.setState({drugs:result.data});
-			// }.bind(this));
-			let result = tmp.filter(item => item.title.indexOf(keyword) !== -1);
-			if (result.length > 0) {
-				this.setState({drugs:result, selectedIndex: 0});
-			} else {
-				this._close();
-			}
+			$post("medicine/search", {kw: keyword}, function(result){
+				if (result.data.length > 0) {
+					this.setState({drugs:result.data, selectedIndex: 0});
+				} else {
+					this._close();
+				}
+			
+			}.bind(this));
+			//let result = tmp.filter(item => item.title.indexOf(keyword) !== -1);
 			
 		} else {
 			this._close();
