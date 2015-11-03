@@ -2,6 +2,7 @@ import React from 'react';
 import DrugTable from './DrugTable.jsx';
 import {findDOMNode} from 'react-dom';
 import SearchDrugInput from './SearchDrugInput.jsx';
+import Model from '../models/Prescription';
 
 import {Grid, Row, Col, Input, Button, Thumbnail, Glyphicon} from 'react-bootstrap';
 
@@ -41,20 +42,25 @@ export default class Prescripion extends React.Component {
 	
 
 	constructor(props) {
-	    super(props);
-	    this.state = {images: [], 
-			patentName: "james",
-			drugs: [],
-		};
+	    super(props); 
+		Model.subjects.subscribe(state => this.setState(state));
 		
 	}
 
+	componentWillMount() {
+		console.log("model init");
+		Model.init();
+	}
+
 	render() {
+		console.log("render", this.state);
+		
 		let sty = this.getStyles();
-		let drugs = this.state.drugs;
 		let leftDrugs = [];
 		let rightDrugs = [];
 		let index = 0;
+
+		let {name, phone, drugs} = this.state;
 		drugs.forEach(drug => {
 			if (index % 2 === 0) {
 				leftDrugs.push(drug);
@@ -71,7 +77,8 @@ export default class Prescripion extends React.Component {
 							<label>Name: </label>
 						</Col>
 						<Col sm={4}>
-							<Input standalone type="text" placeholder="Enter text" />
+							<Input ref="name" standalone type="text" placeholder="Enter text" value={name}
+							onChange={this.nameInputChanged.bind(this)}/>
 						</Col>
 						
 						<Col sm={1}>
@@ -79,7 +86,7 @@ export default class Prescripion extends React.Component {
 						</Col>
 
 						<Col sm={4}>
-							<Input standalone type="text" placeholder="Phone" />
+							<Input standalone type="text" placeholder="Phone" value={phone}/>
 						</Col>
 					</Row>
 					<Row>
@@ -154,9 +161,13 @@ export default class Prescripion extends React.Component {
 		);
 	}
 
+	nameInputChanged() {
+		console.log("nameInputChanged", Model);
+		Model.updateName(this.refs.name.getValue());
+	}
+
 	_addDrug(drug) {
-		this.state.drugs.push(drug);
-		this.setState({drugs: this.state.drugs});
+		Model.addDrug(drug);
 	}
 
 	_handleFileSelect(evt) {
