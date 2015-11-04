@@ -6,7 +6,7 @@ export default class DrugList extends React.Component {
 		return {
 	      	searchList: {
 		      	position: "absolute",
-		      	top: 30,
+		      	top: 45,
 		      	zIndex: 1000,
 		      	backgroundColor: "#FFFFFF",
 	      	},
@@ -22,10 +22,10 @@ export default class DrugList extends React.Component {
 
 		let sty = this.getStyle();
 		let rows = [];
-
 		this.props.drugs.forEach(drug => {
 			let props = {
 				drug: drug,
+				key: drug.id,
 				selected: this.props.drugs.indexOf(drug) === this.props.selectedIndex,
 				rowClicked: this.rowClicked.bind(this),
 			}

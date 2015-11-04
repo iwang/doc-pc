@@ -17,7 +17,7 @@ export default class DrugRow extends React.Component {
 			},
 			optionSelect: {
 				height: 25,
-
+				padding: "0px 5px",
 			},
 		}
 	}

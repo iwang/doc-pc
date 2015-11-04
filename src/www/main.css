@@ -13,3 +13,22 @@ input {
 }
 
 
+.prescritionForm .form-control {
+	margin-top: 10px;
+	display: inline-block;
+}
+
+
+.prescritionForm .btns Button {
+	margin-top: 10px;
+}
+
+.prescritionDrugs table {
+	margin-top: 15px;
+}
+
+.prescritionForm label{
+	margin-top: 15px;
+	width: 100%;
+	text-align: right;
+}

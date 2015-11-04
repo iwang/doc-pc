@@ -10,6 +10,7 @@ export default class SearchDrugInput extends React.Component {
 	    this.state = {
 	    	drugs: [],
 	    	selectedIndex: null,
+	    	keyword: "",
 		};
 		
 	}
@@ -25,17 +26,24 @@ export default class SearchDrugInput extends React.Component {
 
 	_handleSearchInputChange() {
 		let keyword = this.refs.drugInput.getValue();
-		
+		const tmp = [
+			{title: "james", id: "1"}, 
+			{title: "jason", id: "2"}, 
+			{title: "jakon", id: "3"}, 
+			{title: "jaksone", id: "4"}, 
+		]
+
 		if (keyword.trim() !== "") {
-			$post("medicine/search", {kw: keyword}, function(result){
-				if (result.data.length > 0) {
-					this.setState({drugs:result.data, selectedIndex: 0});
-				} else {
-					this._close();
-				}
+			// $post("medicine/search", {kw: keyword}, function(result){
+			// 	this.setState({drugs:result.data});
+			// }.bind(this));
+			let result = tmp.filter(item => item.title.indexOf(keyword) !== -1);
 			
-			}.bind(this));
-			//let result = tmp.filter(item => item.title.indexOf(keyword) !== -1);
+			if (result.length > 0) {
+				this.setState({drugs:result, selectedIndex: 0});
+			} else {
+				this._close();
+			}
 			
 		} else {
 			this._close();
@@ -57,6 +65,10 @@ export default class SearchDrugInput extends React.Component {
 			this.selected(drug);
 		}
 		
+	}
+
+	_onBlur(event) {
+		this._close();
 	}
 
 	_getEventMap() {
@@ -97,6 +109,9 @@ export default class SearchDrugInput extends React.Component {
 	selected(drug) {
 		this.props.addDrugCB(drug);
 		this._close();
+		console.log(this.refs.drugInput);
+		console.log("input", this.refs.drugInput.value);
+		this.refs.drugInput.refs.input.value = "";
 	}
 
 	_close() {
@@ -109,7 +124,8 @@ export default class SearchDrugInput extends React.Component {
 
 		return (
 			<div>
-				<Input standalone type="text" style={sty.drugInput} ref="drugInput"
+				<Input standalone type="text" style={sty.drugInput} ref="drugInput" onBlur={this._onBlur.bind(this)}
+					onFocus={this._handleSearchInputChange.bind(this)}
 					placeholder="输入药方" onChange={this._handleSearchInputChange.bind(this)} 
 					onKeyDown={this._onKeyDown.bind(this)}/>
 				<DrugList drugs={this.state.drugs} selected={this.selected.bind(this)}
