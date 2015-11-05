@@ -5,11 +5,11 @@ export default class HttpService {
 		const prefix = "http://localhost/gancao/appapi/index.php/";
 		let absUrl = prefix + apiUrl;
 		let token = localStorage.getItem("token");
-		let doctor = localStorage.getItem("doctor");
+		let did = localStorage.getItem("did");
 		
-		if (doctor && data["did"] === undefined) {
-			data["did"] = doctor.did;
-			console.log("did", doctor.did);
+		if (did && data["did"] === undefined) {
+			data["did"] = did;
+			console.log("did", did);
 		}
 
 		$.ajax({
@@ -25,7 +25,7 @@ export default class HttpService {
 			if (success) success(result);
 		})
 		.fail(function(result){
-			console.log("error", apiUrl, result);
+			console.log("error", apiUrl, data, result);
 			if (fail) fail(result);
 		})
 		.always(function(result){

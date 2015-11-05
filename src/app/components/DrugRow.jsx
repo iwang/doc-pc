@@ -48,8 +48,11 @@ export default class DrugRow extends React.Component {
 				style={sty.weightInput} standalone onChange={this.weightChanged.bind(this)}/></td>
 				<td>
 				<Input type="select" style={sty.optionSelect} standalone placeholder="select">
-			      <option value="select">ab</option>
-			      <option value="other">cd</option>
+			      <option value="select">备注</option>
+			      <option value="other">打粉</option>
+			      <option value="other">另包</option>
+			      <option value="other">先煎</option>
+			      <option value="other">后下</option>
 			    </Input>
 			    </td>
 				<td><Button bsSize="xsmall" onClick={evt=>Model.deleteDrug(drug)}><Glyphicon glyph="remove" /></Button></td>
