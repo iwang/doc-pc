@@ -16,6 +16,18 @@ export default class ConvertionUtil {
 		});
 	}
 
+	static drugsToJson(drugs) {
+		return JSON.stringify(drugs.map(drug=>{
+			return {
+				k: drug.weight,
+				i: drug.id,
+				u: "克",
+				b: drug.comment,
+				t: drug.title,
+			}
+		}));
+	}
+
 	static getDrugsFromPrescription(raw) {
 		return ConvertionUtil.jsonToDrugs(raw.content);
 	}

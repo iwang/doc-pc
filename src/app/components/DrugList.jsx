@@ -1,5 +1,6 @@
 import React from 'react';
 import DrugSearchRow from './DrugSearchRow';
+import ConvertionUtil from '../services/ConvertionUtil'
 
 export default class DrugList extends React.Component {
 	getStyle() {
@@ -25,7 +26,7 @@ export default class DrugList extends React.Component {
 		this.props.drugs.forEach(drug => {
 			let props = {
 				drug: drug,
-				key: drug.id,
+				key: ConvertionUtil.getUUID(drug.id),
 				selected: this.props.drugs.indexOf(drug) === this.props.selectedIndex,
 				rowClicked: this.rowClicked.bind(this),
 			}

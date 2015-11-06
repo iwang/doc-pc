@@ -7,11 +7,11 @@ export default class TopNav extends React.Component {
 			 <Navbar>
 			    <NavBrand><a href="#">iGancao</a></NavBrand>
 			    <Nav>
-			      <NavItem eventKey={1} href="#/prescription">Prescription</NavItem>
-			      <NavItem eventKey={2} href="#">Patients</NavItem>
-			      <NavDropdown eventKey={3} title="My Setting" id="basic-nav-dropdown">
-			        <MenuItem eventKey="1">My Favorate Prescription</MenuItem>
-			        <MenuItem eventKey="2">Logout</MenuItem>
+			      <NavItem eventKey={1} href="#/prescription">开方</NavItem>
+			      <NavItem eventKey={2} href="#">历史查看</NavItem>
+			      <NavDropdown eventKey={3} title="我的设置" id="basic-nav-dropdown">
+			        <MenuItem eventKey="1">我的常用方</MenuItem>
+			        <MenuItem eventKey="2">注销</MenuItem>
 			       
 			      </NavDropdown>
 			    </Nav>

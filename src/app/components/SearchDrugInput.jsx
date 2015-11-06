@@ -46,16 +46,21 @@ export default class SearchDrugInput extends React.Component {
 		]
 
 		if (keyword.trim() !== "") {
-			// $post("medicine/search", {kw: keyword}, function(result){
-			// 	this.setState({drugs:result.data});
-			// }.bind(this));
-			let result = tmp.filter(item => item.title.indexOf(keyword) !== -1);
+			$post("medicine/search", {kw: keyword}, function(result){
+				if (result.data.length > 0) {
+					this.setState({drugs:result.data, selectedIndex: 0});
+				} else {
+					this._close();
+				}
+				
+			}.bind(this));
+			// let result = tmp.filter(item => item.title.indexOf(keyword) !== -1);
 			
-			if (result.length > 0) {
-				this.setState({drugs:result, selectedIndex: 0});
-			} else {
-				this._close();
-			}
+			// if (result.length > 0) {
+			// 	this.setState({drugs:result, selectedIndex: 0});
+			// } else {
+			// 	this._close();
+			// }
 			
 		} else {
 			this._close();
@@ -115,7 +120,10 @@ export default class SearchDrugInput extends React.Component {
 	}
 
 	selected(drug) {
-		this.props.addDrugCB(drug);
+		this.props.addDrugCB({
+			id: drug.id,
+			title: drug.title,
+		});
 		this._close();
 		this.refs.drugSearchInput.refs.input.value = "";
 	}

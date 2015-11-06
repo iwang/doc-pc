@@ -62,24 +62,24 @@ export default class Prescripion extends React.Component {
 				<Grid className="prescriptionForm">
 					<Row>
 						<Col sm={4}>
-							<h3>Info</h3>
+							<h3>患者信息</h3>
 							<Row>
 								<Col sm={2}>
-									<label>Name:</label>
+									<label>姓名:</label>
 								</Col>
 								<Col sm={5}>
-									<Input ref="name" standalone type="text" placeholder="Enter text" 
+									<Input ref="name" standalone type="text" placeholder="患者姓名" 
 									value={name} bsStyle={nameWarningStyle}
 									onChange={this.nameInputChanged.bind(this)}/>
 								</Col>
 							</Row>
 							<Row>
 								<Col sm={2}>
-									<label>phone:</label>
+									<label>手机:</label>
 								</Col>
 
 								<Col sm={5}>
-									<Input ref="phone" standalone type="text" placeholder="Phone" 
+									<Input ref="phone" standalone type="text" placeholder="手机号码" 
 									value={phone} bsStyle={phoneWarningStyle}
 										onChange={this.phoneInputChanged.bind(this)}/>
 									
@@ -87,34 +87,34 @@ export default class Prescripion extends React.Component {
 							</Row>
 							<Row>
 								<Col sm={2}>
-									<label>Sex:</label>
+									<label>性别:</label>
 								</Col>
 								<Col sm={5}>
 									<Input type="select" ref="sex" standalone 
 									value={sex} onChange={this.sexInputChanged.bind(this)}>
-										<option value="1">male</option>
-					      				<option value="2">femail</option>
+										<option value="1">男</option>
+					      				<option value="2">女</option>
 									</Input>
 								</Col>								
 							</Row>
 							<Row>
 								<Col sm={2}>
-									<label>age:</label>
+									<label>年龄:</label>
 								</Col>
 
 								<Col sm={5}>
 									<Input type="text" ref="age" standalone bsStyle={ageWarningStyle}
-											placeholder="age" value={age} 
+											placeholder="年龄" value={age} 
 											onChange={this.ageInputChanged.bind(this)}/>
 								</Col>
 							</Row>
 							<Row>
 								<Col sm={2}>
-									<label>Symptom:</label>
+									<label>症状:</label>
 								</Col>
 								<Col sm={10}>
 									<Input type="textarea" ref="symptom" standalone style={sty.textarea} 
-										placeholder="Enter Symptom" onChange={this.symptomInputChanged.bind(this)} 
+										placeholder="患者症状" onChange={this.symptomInputChanged.bind(this)} 
 										value={symptom}/>
 								</Col>
 							</Row>
@@ -131,36 +131,36 @@ export default class Prescripion extends React.Component {
 							 </Row>
 							<Row>
 								<Col sm={2}>
-									<label>Diagnosis:</label>
+									<label>诊断:</label>
 								</Col>
 								<Col sm={10}>
 									<Input type="textarea" ref="diagnosis" standalone style={sty.textarea} 
-									placeholder="Enter Diagnosis" onChange={this.diagnosisInputChanged.bind(this)}
+									placeholder="诊断结果" onChange={this.diagnosisInputChanged.bind(this)}
 									value={diagnosis}/>
 								</Col>
 							</Row>
 							<Row>
 								<Col sm={2}>
-									<label>Comment:</label>
+									<label>医嘱:</label>
 								</Col>
 								<Col sm={10}>
 									<Input type="textarea" ref="comment" standalone style={sty.textarea} 
-									placeholder="Enter Comment" onChange={this.commentInputChanged.bind(this)}
+									placeholder="医嘱" onChange={this.commentInputChanged.bind(this)}
 									value={comment}/>
 								</Col>
 							</Row>
 							<Row>
 								<Col sm={2}>
-									<label>Amount:</label>
+									<label>贴数:</label>
 								</Col>
 								<Col sm={5}>
 									<Input type="text" ref="amount" standalone bsStyle={amountWarningStyle}
-											placeholder="amount" value={amount} 
+											placeholder="药贴数" value={amount} 
 											onChange={this.amountInputChanged.bind(this)}/>
 								</Col>
 								<Col sm={3}>
 									<Input type="checkbox" ref="decocted" standalone 
-											label="Decocted" value={decocted}
+											label="代煎" value={decocted}
 											placeholder="amount" 
 											onChange={this.decoctedChanged.bind(this)}/>
 								</Col>
@@ -169,7 +169,7 @@ export default class Prescripion extends React.Component {
 							
 						</Col>
 						<Col sm={4}>
-							<h3>Prescription</h3>
+							<h3>药方</h3>
 							<Row>
 								<Col sm={12}>
 									<SearchDrugInput addDrugCB={this._addDrug.bind(this)}/>
@@ -184,7 +184,7 @@ export default class Prescripion extends React.Component {
 							
 						</Col>
 						<Col sm={4}>
-							<h3>My Favorate</h3>
+							<h3>常用药方</h3>
 							<Row>
 								<Col sm={12}>
 									<MyFavoritePrescriptions addFavoritePrescription={this.addFavoritePrescription}/>

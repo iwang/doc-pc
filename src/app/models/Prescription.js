@@ -149,7 +149,7 @@ function validateDrugWeight(drug, weight) {
 function addDrugs(drugs) {
 	console.log("model -> addDrug", drugs);
 	drugs.forEach(drug=>{
-		if (drug.weight === "") {
+		if (_isEmpty(drug.weight)) {
 			drug.weight = 1;
 		}
 		if (drug.key === undefined) {
@@ -166,6 +166,10 @@ function deleteDrug(drug) {
 	state.drugs = drugs;
 	console.log(drugs);
 	subjects.onNext(state);
+}
+
+function _isEmpty(val) {
+	return val === "" || val === null || val === undefined;
 }
 
 function getState() {

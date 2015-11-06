@@ -12,11 +12,11 @@ export default class DrugTable extends React.Component {
 			 <Table striped bordered condensed hover>
 			    <thead>
 			      <tr>
-			        <th>code</th>
-			        <th>title</th>
-			        <th>weight</th>
-			        <th>comment</th>
-			        <th>op</th>
+			        <th>编码</th>
+			        <th>药材</th>
+			        <th>克数</th>
+			        <th>备注</th>
+			        <th>操作</th>
 			      </tr>
 			    </thead>
 			    <tbody>
