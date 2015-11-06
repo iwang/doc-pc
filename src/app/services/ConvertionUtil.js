@@ -11,6 +11,7 @@ export default class ConvertionUtil {
 				title: drug["t"],
 				weight: drug["k"],
 				comment: drug["b"],
+				key: ConvertionUtil.getUUID(drug["i"]),
 			}
 		});
 	}

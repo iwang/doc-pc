@@ -129,7 +129,7 @@ function updateDrugWeight(drug, weight) {
 	subjects.onNext(state);
 }
 
-function updateDrugWeight(drug, comment) {
+function updateDrugComment(drug, comment) {
 	console.log("model -> updateDrugWeight");
 	drug.comment = comment;
 	subjects.onNext(state);
@@ -173,6 +173,6 @@ function getState() {
 }
 
 export default {
-	subjects, updateName, updatePhone, getState, updateDrugWeight, updateAmount, updateDecocted, updateComment, 
+	subjects, updateName, updatePhone, getState, updateAmount, updateDecocted, updateComment, updateDrugComment,
 	addDrugs, updateDrugWeight, deleteDrug, validateDrugWeight, updateSex, updateAge, updateSymptom, updateDiagnosis,
 }

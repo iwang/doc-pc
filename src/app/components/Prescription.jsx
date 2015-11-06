@@ -49,7 +49,6 @@ export default class Prescripion extends React.Component {
 	}
 
 	render() {
-		console.log("render", this.state);
 		if (!this.state) return (null);
 		let sty = this.getStyles();
 		
@@ -58,8 +57,6 @@ export default class Prescripion extends React.Component {
 		let nameWarningStyle = nameValid ? "" : "error";
 		let ageWarningStyle = ageValid ? "" : "error";
 		let amountWarningStyle = amountValid ? "" : "error";
-		//let decoctedValue = decocted ? "on" : "off";
-		console.log("decoctedValue", decocted);
 		return (
 			<div>
 				<Grid className="prescriptionForm">

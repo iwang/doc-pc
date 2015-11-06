@@ -31,7 +31,7 @@ export default class DrugRow extends React.Component {
 
 	commentChanged() {
 		let comment = this.refs.comment.getValue();
-		Model.updateDrugWeight(this.props.drug, comment);
+		Model.updateDrugComment(this.props.drug, comment);
 	}
 
 	weightInputBlur() {
@@ -41,7 +41,6 @@ export default class DrugRow extends React.Component {
 	}
 
 	render() {
-		console.log("row render", this);
 		let drug = this.props.drug;
 		let sty = this.getStyles();
 	

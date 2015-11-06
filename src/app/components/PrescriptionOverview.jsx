@@ -4,7 +4,6 @@ import {Popover} from 'react-bootstrap';
 export default class PrescriptionOverview extends React.Component {
 	render() {
 		let drugEls = this.props.drugs.map((drug, index)=>{
-			console.log(index);
 			let strippedClassName = index % 2 === 1 ? "stripped" : "";
 
 			return <li key={drug.key} className={strippedClassName}>
