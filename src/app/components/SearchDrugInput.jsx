@@ -3,6 +3,7 @@ import {Input} from 'react-bootstrap';
 import {$post} from '../services/HttpService';
 import DrugList from './DrugList';
 import {keyMap} from '../services/Constants';
+import {findDOMNode} from 'react-dom';
 
 export default class SearchDrugInput extends React.Component {
 	constructor(props) {
@@ -12,25 +13,36 @@ export default class SearchDrugInput extends React.Component {
 	    	selectedIndex: null,
 	    	keyword: "",
 		};
-		
+		this._handleWindowClose.bind(this);
 	}
 
-	getStyle() {
-		return {
-			drugInput: {
-		      	width: "150",
-		      	float: "left",
-	      	},
-		}
-	}
+	componentDidMount() {
+        // The `focus` event does not bubble, so we must capture it instead.
+        // This closes Typeahead's dropdown whenever something else gains focus.
+        window.addEventListener('focus', this._handleWindowClose, true);
+        // If we click anywhere outside of Typeahead, close the dropdown.
+        window.addEventListener('click', this._handleWindowClose, false);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('focus', this._handleWindowClose, true);
+        window.removeEventListener('click', this._handleWindowClose, false);
+    }
+
+	 _handleWindowClose = (event) => {
+        let target = event.target;
+        if (target !== window && !findDOMNode(this).contains(target)) {
+            this._close();
+        }
+    }
 
 	_handleSearchInputChange() {
-		let keyword = this.refs.drugInput.getValue();
+		let keyword = this.refs.drugSearchInput.getValue();
 		const tmp = [
-			{title: "james", id: "1"}, 
-			{title: "jason", id: "2"}, 
-			{title: "jakon", id: "3"}, 
-			{title: "jaksone", id: "4"}, 
+			{title: "james", id: "11111", weight: ""}, 
+			{title: "jason", id: "21111", weight: ""}, 
+			{title: "jakon", id: "3", weight: ""}, 
+			{title: "jaksone", id: "4", weight: ""}, 
 		]
 
 		if (keyword.trim() !== "") {
@@ -65,10 +77,6 @@ export default class SearchDrugInput extends React.Component {
 			this.selected(drug);
 		}
 		
-	}
-
-	_onBlur(event) {
-		this._close();
 	}
 
 	_getEventMap() {
@@ -109,9 +117,7 @@ export default class SearchDrugInput extends React.Component {
 	selected(drug) {
 		this.props.addDrugCB(drug);
 		this._close();
-		console.log(this.refs.drugInput);
-		console.log("input", this.refs.drugInput.value);
-		this.refs.drugInput.refs.input.value = "";
+		this.refs.drugSearchInput.refs.input.value = "";
 	}
 
 	_close() {
@@ -119,16 +125,13 @@ export default class SearchDrugInput extends React.Component {
 	}
 
 	render() {
-		console.log("searchInput render");
-		let sty = this.getStyle();
-
 		return (
 			<div>
-				<Input standalone type="text" style={sty.drugInput} ref="drugInput" onBlur={this._onBlur.bind(this)}
+				<Input type="text" className="drugSearchInput" ref="drugSearchInput" standalone
 					onFocus={this._handleSearchInputChange.bind(this)}
 					placeholder="输入药方" onChange={this._handleSearchInputChange.bind(this)} 
 					onKeyDown={this._onKeyDown.bind(this)}/>
-				<DrugList drugs={this.state.drugs} selected={this.selected.bind(this)}
+				<DrugList drugs={this.state.drugs} rowClicked={this.selected.bind(this)}
 					selectedIndex={this.state.selectedIndex}/>
 				
 			</div>

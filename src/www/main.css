@@ -7,34 +7,38 @@ input {
 	font-family: Helvetica,Arial,sans-serif;
 }
 
+textarea {
+    resize: none;
+}
+
 .link {
 	text-decoration: underline;
 	cursor: pointer;
 }
 
 
-.prescritionForm .form-control {
+.prescriptionForm .form-control {
 	margin-top: 10px;
 	display: inline-block;
 }
 
 
-.prescritionForm .btns Button {
+.prescriptionForm .btns Button {
 	margin-top: 10px;
 }
 
-.prescritionDrugs table {
-	margin-top: 15px;
+.prescriptionForm table {
+	margin-top: 10px;
 }
 
-.prescritionForm label{
+.prescriptionForm label{
 	margin-top: 15px;
 	width: 100%;
 	text-align: right;
 }
 
 .glyphicon.spinning {
-	font-size: 40px;
+	font-size: 30px;
     animation: spin 1s infinite linear;
     -webkit-animation: spin2 1s infinite linear;
 }
@@ -47,4 +51,80 @@ input {
 @-webkit-keyframes spin2 {
     from { -webkit-transform: rotate(0deg); }
     to { -webkit-transform: rotate(360deg); }
+}
+
+.actionBtns {
+	position: absolute;
+	right: 0px;
+	top: -12px;
+}
+
+.prescriptionForm .drugSearchInput  {
+	width: 200px;
+}
+
+.prescriptionForm .drugSearchItem {
+	width: 200px;
+	margin-top: 0!important;
+}
+
+
+.drug-row .drug-id {
+	width: 50px;
+	
+}
+
+.drug-row .drug-title {
+	width: 60px;
+	
+}
+
+.drug-row .drug-weight {
+	width: 50px;
+}
+
+.drug-row .drug-comment {
+	width: 50px;
+}
+
+.drug-row .drug-op {
+	width: 15px;
+}
+
+.drug-row span {
+	display: inline-block;
+}
+
+.drug-row .stripped{
+	background-color: #f9f9f9;
+}
+
+ul {
+	padding-left: 0;
+}
+
+li {
+	list-style:none;
+}
+
+.favor-prescription .title {
+	width: 80px;
+	display: inline-block;
+}
+
+.favor-prescription .action {
+	margin-left: 5px;
+}
+
+.prescription-preview td {
+    border-top: none!important;
+}
+
+.prescription-preview .title{
+	font-weight: bold;
+	text-align: right;
+}
+
+.prescription-preview .modal-footer {
+	border-top: none;
 }

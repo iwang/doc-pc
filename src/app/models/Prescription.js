@@ -1,5 +1,6 @@
 import Rx from 'rx';
 import update from 'react/lib/update'
+import ConvertionUtil from '../services/ConvertionUtil';
 
 let state = {
 	name: "",
@@ -8,10 +9,13 @@ let state = {
 	age: "",
 	symptom: "",
 	diagnosis: "",
+	amount: "",
 	drugs: [],
 	phoneValid: false,
 	nameValid: false,
 	ageValid: false,
+	amountValid: false,
+	decocted: false,
 	images:[],
 	showPreview: false,
 }
@@ -49,6 +53,17 @@ function updateAge(val) {
 	subjects.onNext(state);
 }
 
+function updateAmount(val) {
+	val = val.trim();
+	let valid = _validAmount(val);
+	// no need to sync ageValid with valid because invalid input will be rejected except empty string
+	if (valid) {
+		state.amount = val;
+		state.amountValid = val !== "";
+	}
+	subjects.onNext(state);
+}
+
 function updateSymptom(val) {
 	console.log("model -> updateSymptom", val);
 	state.symptom = val;
@@ -61,10 +76,26 @@ function updateDiagnosis(val) {
 	subjects.onNext(state);
 }
 
+function updateComment(val) {
+	console.log("model -> updateComment", val);
+	state.comment = val;
+	subjects.onNext(state);
+}
+
 function updateSex(val) {
 	console.log("model -> updateSex", val);
 	state.sex = val;
 	subjects.onNext(state);
+}
+
+function updateDecocted(val) {
+	console.log("model -> updateDecocted", val);
+	state.decocted = val;
+	subjects.onNext(state);
+}
+
+function _validAmount(val) {
+	return /^(\d)+$/.test(val) || val === ""
 }
 
 function _validAge(val) {
@@ -98,6 +129,12 @@ function updateDrugWeight(drug, weight) {
 	subjects.onNext(state);
 }
 
+function updateDrugWeight(drug, comment) {
+	console.log("model -> updateDrugWeight");
+	drug.comment = comment;
+	subjects.onNext(state);
+}
+
 function validateDrugWeight(drug, weight) {
 	console.log("model -> validateDrugWeight");
 	weight = weight.trim();
@@ -109,11 +146,17 @@ function validateDrugWeight(drug, weight) {
 
 }
 
-
-function addDrug(drug) {
-	console.log("model -> addDrug");
-	drug.weight = 1;
-	state.drugs.push(drug);
+function addDrugs(drugs) {
+	console.log("model -> addDrug", drugs);
+	drugs.forEach(drug=>{
+		if (drug.weight === "") {
+			drug.weight = 1;
+		}
+		if (drug.key === undefined) {
+			drug.key = ConvertionUtil.getUUID(drug.id);
+		}
+		state.drugs.push(drug);
+	})
 	subjects.onNext(state);
 }
 
@@ -125,11 +168,11 @@ function deleteDrug(drug) {
 	subjects.onNext(state);
 }
 
-function init() {
-	subjects.onNext(state);
+function getState() {
+	return state;
 }
 
 export default {
-	subjects, updateName, updatePhone, init, 
-	addDrug, updateDrugWeight, deleteDrug, validateDrugWeight, updateSex, updateAge, updateSymptom, updateDiagnosis,
+	subjects, updateName, updatePhone, getState, updateDrugWeight, updateAmount, updateDecocted, updateComment, 
+	addDrugs, updateDrugWeight, deleteDrug, validateDrugWeight, updateSex, updateAge, updateSymptom, updateDiagnosis,
 }

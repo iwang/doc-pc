@@ -4,10 +4,6 @@ import {Button} from 'react-bootstrap';
 export default class DrugSearchRow extends React.Component {
 	getStyles() {
 		return {
-			btn: {
-				width: 150,
-				marginTop: 0,
-			},
 			hoverColor: {
 	      		backgroundColor: "#e0e0e0",
 	      	},
@@ -15,6 +11,7 @@ export default class DrugSearchRow extends React.Component {
 	}
 
 	_onClicked() {
+		console.log("_onClicked");
 		this.props.rowClicked(this.props.drug);
 	}
 
@@ -25,8 +22,9 @@ export default class DrugSearchRow extends React.Component {
 		let additionStyle = this.props.selected ? sty. hoverColor : {};
 		return (
 			
-				<Button bsSize="medium" onClick={this._onClicked.bind(this)} 
-					style={{...additionStyle, ...sty.btn}} block>{drug.title}</Button>
+			<Button bsSize="medium" onClick={this._onClicked.bind(this)} className="drugSearchItem"
+				style={additionStyle} block>{drug.title}
+			</Button>
 		
 		);
 	}

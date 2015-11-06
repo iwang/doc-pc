@@ -15,7 +15,7 @@ export default class DrugList extends React.Component {
 
 
 	rowClicked(drug) {
-		this.props.selected(drug);
+		this.props.rowClicked(drug);
 	}
 
 	render() {

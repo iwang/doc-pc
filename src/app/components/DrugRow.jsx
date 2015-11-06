@@ -14,10 +14,12 @@ export default class DrugRow extends React.Component {
 				width: 40,
 				height: 25,
 				padding: "0px 5px",
+				marginTop: 0,
 			},
 			optionSelect: {
 				height: 25,
 				padding: "0px 5px",
+				marginTop: 0,
 			},
 		}
 	}
@@ -25,6 +27,11 @@ export default class DrugRow extends React.Component {
 	weightChanged() {
 		let weight = this.refs.weightInput.getValue();
 		Model.updateDrugWeight(this.props.drug, weight);
+	}
+
+	commentChanged() {
+		let comment = this.refs.comment.getValue();
+		Model.updateDrugWeight(this.props.drug, comment);
 	}
 
 	weightInputBlur() {
@@ -40,22 +47,25 @@ export default class DrugRow extends React.Component {
 	
 		return (
 
-			<tr>
-				<td>{drug.id}</td>
+			<tr className="drug-row">
+				<td className="drug-id">{drug.id}</td>
 				<td>{drug.title}</td>
-				<td><Input type="text" ref="weightInput" value={drug.weight}
+				<td className="drug-weight"><Input ref="weightInput" type="text" value={drug.weight}
 				onBlur={this.weightInputBlur.bind(this)}
 				style={sty.weightInput} standalone onChange={this.weightChanged.bind(this)}/></td>
-				<td>
-				<Input type="select" style={sty.optionSelect} standalone placeholder="select">
-			      <option value="select">备注</option>
-			      <option value="other">打粉</option>
-			      <option value="other">另包</option>
-			      <option value="other">先煎</option>
-			      <option value="other">后下</option>
-			    </Input>
+				<td className="drug-comment">
+					<Input ref="comment" value={drug.comment} type="select" style={sty.optionSelect} standalone placeholder="select"
+						onChange={this.commentChanged.bind(this)}>
+				      <option value="">备注</option>
+				      <option value="打粉">打粉</option>
+				      <option value="另包">另包</option>
+				      <option value="先煎">先煎</option>
+				      <option value="后下">后下</option>
+				    </Input>
 			    </td>
-				<td><Button bsSize="xsmall" onClick={evt=>Model.deleteDrug(drug)}><Glyphicon glyph="remove" /></Button></td>
+				<td className="drug-op">
+					<Button bsSize="xsmall" onClick={evt=>Model.deleteDrug(drug)}><Glyphicon glyph="remove" /></Button>
+				</td>
 			</tr>
 		);
 	}
