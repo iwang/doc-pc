@@ -1,0 +1,254 @@
+body {
+  font: 14px Helvetica,Arial,sans-serif;
+  line-height: 20px;
+}
+
+input {
+	font-family: Helvetica,Arial,sans-serif;
+}
+
+textarea {
+    resize: none;
+}
+
+.no-padding .col-sm-2 {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.link {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.modal-header {
+	padding-bottom: 0;
+	padding-top: 10px;
+	border-bottom: none;
+	background-color: #F2F2F2;
+}
+
+.modal-title {
+	text-align: center;
+	font-size: 20px;
+}
+
+.section-title {
+	padding-bottom: 2px;
+	border-bottom: 1px solid #CCCCCC;
+}
+
+body .modal-footer {
+	border-top: none;
+}
+
+.field {
+	padding-bottom: 10px;
+}
+
+.field div{
+	display: inline-block;
+}
+
+.field input {
+	margin-left: 10px;
+}
+
+.field input.medium {
+	width: 200px;
+}
+
+.prescriptionForm .form-control {
+	margin-top: 10px;
+	display: inline-block;
+}
+
+.prescriptionForm .input-group {
+	margin-top: 10px;
+}
+
+.prescriptionForm .input-group .form-control {
+	margin-top: 0;
+}
+
+.prescriptionForm .btns Button {
+	margin-top: 10px;
+}
+
+.prescriptionForm table {
+	margin-top: 10px;
+}
+
+.form label {
+	margin-top: 15px;
+	width: 100%;
+	text-align: right;
+}
+
+.prescriptionForm .checkbox label {
+	width: auto;
+}
+
+.glyphicon.spinning.big {
+	font-size: 30px;
+}
+
+.glyphicon.spinning {
+    animation: spin 1s infinite linear;
+    -webkit-animation: spin2 1s infinite linear;
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg); }
+    to { transform: scale(1) rotate(360deg); }
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+
+.actionBtns {
+	position: absolute;
+	right: 0px;
+	top: -12px;
+}
+
+
+.prescriptionForm .drugSearchInput  {
+	width: 200px;
+	position: relative;;
+}
+
+.drugSearchInputWrapper .spinning {
+	position: absolute;
+	left: 195px;
+	top: 20px;
+}
+
+.prescriptionForm .drugSearchItem {
+	width: 200px;
+	margin-top: 0!important;
+}
+
+.prescriptionForm .drugSearchList {
+  	position: absolute;
+  	z-index: 1000;
+  	background-color: #FFFFFF;
+  	border: 1px solid #CCCCCC;
+  	width: 200px;
+	max-height: 300px;
+	overflow-y: scroll;
+}
+
+.prescriptionForm .drugSearchList li:hover {
+	background-color: #e0e0e0;
+}
+
+.prescriptionForm .drugSearchList li {
+	cursor: pointer;
+    padding-left: 10px;
+}
+
+.drug-row td {
+	vertical-align: middle!important; 
+}
+
+.drug-row .drug-id {
+	width: 50px;
+	
+}
+
+.drug-row .drug-title {
+	width: 150px;
+	font-weight: bold;
+}
+
+.drug-row .drug-weight {
+	width: 50px;
+	color: red;
+}
+
+.drug-row .drug-comment {
+	width: 40px;
+	color: #CCCCCC;
+}
+
+.drug-row .drug-comment.editable {
+	width: 80px;
+}
+
+.drug-row .drug-op {
+	width: 40px;
+}
+
+.drug-row span {
+	display: inline-block;
+}
+
+.drug-row li {
+	display: inline-block;
+}
+
+.drug-row .stripped{
+	background-color: #f9f9f9;
+}
+
+ul {
+	padding-left: 0;
+}
+
+li {
+	list-style:none;
+}
+
+.favor-prescription .title {
+	width: 80px;
+	display: inline-block;
+}
+
+.favor-prescription .action {
+	margin-left: 5px;
+}
+
+.prescription-preview td {
+    border-top: none!important;
+}
+
+.prescription-preview .title{
+	font-weight: bold;
+	text-align: right;
+}
+
+.prescription-preview .drug-row {
+	padding-left: 15px;
+}
+
+.prescription-preview .row {
+	margin-left: 0;
+}
+
+
+.prescription-preview .footer-row {
+	float: left;
+	width: 80%;
+	text-align: left;
+}
+
+.footer-row.error {
+	color: red;
+	font-size: 20px;
+}
+
+.prescription-preview .total {
+	color: red;
+	font-size: 20px;
+}
+
+.prescription-preview .submit {
+	margin-top: 15px;
+}
+
+.save-to-favorite-popover label{
+
+}

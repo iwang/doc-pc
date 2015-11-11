@@ -5,21 +5,26 @@ import PrescriptionOverview from './PrescriptionOverview';
 import ConvertionUtil from '../services/ConvertionUtil';
 
 export default class MyFavoritePrescriptions extends React.Component {
-	constructor(props) {
-	    super(props);
-	    this.state = {
+	getInitState() {
+		return {
 	    	loaded: false,
 	    	prescriptions: [],
 		};
+	}
+
+	constructor(props) {
+	    super(props);
+	    this.state = this.getInitState();
 		
 	}
 
-	componentDidMount() {
+	loadData() {
+		this.setState(this.getInitState());
 		$post("prescript/getlist_personal", {}, 
 		result => {
 			this.setState({
 				loaded: true, 
-				prescriptions: result.data,
+				prescriptions: result.data || [],
 			})
 		}, 
 		result => {
@@ -32,10 +37,14 @@ export default class MyFavoritePrescriptions extends React.Component {
 		});
 	}
 
+	componentDidMount() {
+		this.loadData();
+	}
+
 	render() {
 		let {loaded, prescriptions} = this.state;
 		if (!loaded) {
-			return  <span className="glyphicon glyphicon-refresh spinning"></span>;
+			return  <span className="glyphicon glyphicon-refresh spinning big"></span>;
 		} else {
 			let prescriptionEl = prescriptions.map(prescritpion=>{
 				let formattedDrugs = ConvertionUtil.jsonToDrugs(prescritpion.content);

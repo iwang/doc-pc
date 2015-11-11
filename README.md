@@ -1,4 +1,3 @@
-
 ## Installation
 After cloning the repository, install dependencies:
 ```

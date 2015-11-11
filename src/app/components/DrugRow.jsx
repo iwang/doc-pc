@@ -1,6 +1,5 @@
 import React from 'react';
 import {Input, Button, Glyphicon} from 'react-bootstrap';
-import Model from '../models/Prescription';
 
 export default class DrugRow extends React.Component {
 	constructor(props) {
@@ -26,18 +25,18 @@ export default class DrugRow extends React.Component {
 
 	weightChanged() {
 		let weight = this.refs.weightInput.getValue();
-		Model.updateDrugWeight(this.props.drug, weight);
+		this.props.model.updateDrugWeight(this.props.drug, weight);
 	}
 
 	commentChanged() {
 		let comment = this.refs.comment.getValue();
-		Model.updateDrugComment(this.props.drug, comment);
+		this.props.model.updateDrugComment(this.props.drug, comment);
 	}
 
 	weightInputBlur() {
 		let weight = this.refs.weightInput.getValue();
 		// allow input empty string, focusing out needs reset the previous valid value
-		Model.validateDrugWeight(this.props.drug, weight);
+		this.props.model.validateDrugWeight(this.props.drug, weight);
 	}
 
 	render() {
@@ -52,7 +51,7 @@ export default class DrugRow extends React.Component {
 				<td className="drug-weight"><Input ref="weightInput" type="text" value={drug.weight}
 				onBlur={this.weightInputBlur.bind(this)}
 				style={sty.weightInput} standalone onChange={this.weightChanged.bind(this)}/></td>
-				<td className="drug-comment">
+				<td className="drug-comment editable">
 					<Input ref="comment" value={drug.comment} type="select" style={sty.optionSelect} standalone placeholder="select"
 						onChange={this.commentChanged.bind(this)}>
 				      <option value="">备注</option>
@@ -63,7 +62,7 @@ export default class DrugRow extends React.Component {
 				    </Input>
 			    </td>
 				<td className="drug-op">
-					<Button bsSize="xsmall" onClick={evt=>Model.deleteDrug(drug)}><Glyphicon glyph="remove" /></Button>
+					<Button bsSize="xsmall" onClick={evt=>this.props.model.deleteDrug(drug)}><Glyphicon glyph="remove" /></Button>
 				</td>
 			</tr>
 		);

@@ -6,7 +6,7 @@ export default class DrugTable extends React.Component {
 	render() {
 		let rows = [];
 		this.props.drugs.forEach(d => {
-			rows.push(<DrugRow key={d.key} drug={d} />);
+			rows.push(<DrugRow key={d.key} drug={d} model={this.props.model}/>);
 		});
 		return (
 			 <Table striped bordered condensed hover>

@@ -3,11 +3,12 @@ import DrugTable from './DrugTable.jsx';
 import {findDOMNode} from 'react-dom';
 import SearchDrugInput from './SearchDrugInput.jsx';
 import PrescriptionPreview from './PrescriptionPreview.jsx';
-import Model from '../models/Prescription';
+import Prescription from '../models/Prescription';
 import ConvertionUtil from '../services/ConvertionUtil';
-import MyFavoritePrescriptions from './MyFavoritePrescriptions.jsx';
-
+import MyFavoritePrescriptions from './MyFavoritePrescriptions';
+import SaveToMyFavoritePopover from './SaveToMyFavoritePopover'
 import {Grid, Row, Col, Input, Button, Thumbnail, Glyphicon} from 'react-bootstrap';
+import '../css/main.css';
 
 export default class Prescripion extends React.Component {
 	getStyles() {
@@ -43,34 +44,93 @@ export default class Prescripion extends React.Component {
 		return sty;
 	}
 
+	getInitState() {
+		return {
+			name: "",
+			phone: "",
+			gender: 1,
+			age: "",
+			symptom: "",
+			diagnosis: "",
+			amount: "",
+			revistDuration: "",
+			type: "1",
+			pack:"膏体罐装",
+		 comment: "",
+			drugs: [],
+			phoneValid: false,
+			nameValid: false,
+			ageValid: false,
+			amountValid: false,
+			revistDurationValid: false,
+			decocted: false,
+			images:[],
+			showPreview: false,
+		};
+	}
+
+
+	constructor(props) {
+	    super(props);
+	    this.state = this.getInitState();
+		this.model = new Prescription(this.state);
+	}
+
 	componentDidMount() {
-		Model.subjects.subscribe(state=>this.setState(state));
-		this.state = Model.getState();
+		this.modelDisposal = this.model.subjects.subscribe(state=>this.setState(state));
+	}
+
+	componentWillUnmount() {
+		console.log("dispose");
+		this.modelDisposal.dispose();
+
 	}
 
 	render() {
 		if (!this.state) return (null);
 		let sty = this.getStyles();
 		
-		let {name, phone, sex, age, diagnosis, symptom, comment, amount, decocted, drugs, phoneValid, nameValid, ageValid, amountValid} = this.state;
+		let {name, phone, gender, age, diagnosis, symptom, comment, amount, decocted, type, pack, drugs, revistDuration, phoneValid, nameValid, ageValid, amountValid, revistDurationValid} = this.state;
 		let phoneWarningStyle = phoneValid ? "" : "error";
 		let nameWarningStyle = nameValid ? "" : "error";
 		let ageWarningStyle = ageValid ? "" : "error";
 		let amountWarningStyle = amountValid ? "" : "error";
+		let revisitwarningStyle = revistDurationValid ? "" : "error";
+
+		let previewValid = phoneValid&&nameValid&&ageValid&&amountValid&&drugs.length>0;
+		let previewDiabled = previewValid ? "" : "disabled";
+		let packUI = null;
+
+		if (type === "3") {
+			packUI = <Row>
+						<Col sm={2}>
+							<label>包装方式:</label>
+						</Col>
+						<Col sm={5}>
+							<Input type="select" standalone 
+								value={pack} onChange={evt=>this.packChanged(evt.target.value)}>
+								<option value="膏体罐装">膏体罐装</option>
+			      				<option value="流浸膏小包装">流浸膏小包装</option>
+			      				<option value="干切片小包装">干切片小包装</option>
+							</Input>
+						</Col>								
+					</Row>;
+		}
+
 		return (
 			<div>
-				<Grid className="prescriptionForm">
+				<Grid className="prescriptionForm form no-padding">
 					<Row>
-						<Col sm={4}>
+						<Col sm={4} className="patientInfo">
 							<h3>患者信息</h3>
 							<Row>
 								<Col sm={2}>
 									<label>姓名:</label>
 								</Col>
 								<Col sm={5}>
-									<Input ref="name" standalone type="text" placeholder="患者姓名" 
+									<Input standalone type="text" placeholder="患者姓名" 
 									value={name} bsStyle={nameWarningStyle}
-									onChange={this.nameInputChanged.bind(this)}/>
+									onChange={evt=>this.nameInputChanged(evt.target.value)}/>
 								</Col>
 							</Row>
 							<Row>
@@ -79,9 +139,9 @@ export default class Prescripion extends React.Component {
 								</Col>
 
 								<Col sm={5}>
-									<Input ref="phone" standalone type="text" placeholder="手机号码" 
+									<Input standalone type="text" placeholder="手机号码" 
 									value={phone} bsStyle={phoneWarningStyle}
-										onChange={this.phoneInputChanged.bind(this)}/>
+										onChange={evt=>this.phoneInputChanged(evt.target.value)}/>
 									
 								</Col>
 							</Row>
@@ -90,10 +150,10 @@ export default class Prescripion extends React.Component {
 									<label>性别:</label>
 								</Col>
 								<Col sm={5}>
-									<Input type="select" ref="sex" standalone 
-									value={sex} onChange={this.sexInputChanged.bind(this)}>
+									<Input type="select" standalone 
+									value={gender} onChange={evt=>this.genderInputChanged(evt.target.value)}>
 										<option value="1">男</option>
-					      				<option value="2">女</option>
+					      				<option value="0">女</option>
 									</Input>
 								</Col>								
 							</Row>
@@ -103,18 +163,19 @@ export default class Prescripion extends React.Component {
 								</Col>
 
 								<Col sm={5}>
-									<Input type="text" ref="age" standalone bsStyle={ageWarningStyle}
+									<Input type="text" standalone bsStyle={ageWarningStyle}
 											placeholder="年龄" value={age} 
-											onChange={this.ageInputChanged.bind(this)}/>
+											onChange={evt=>this.ageInputChanged(evt.target.value)}/>
 								</Col>
 							</Row>
 							<Row>
 								<Col sm={2}>
 									<label>症状:</label>
 								</Col>
-								<Col sm={10}>
-									<Input type="textarea" ref="symptom" standalone style={sty.textarea} 
-										placeholder="患者症状" onChange={this.symptomInputChanged.bind(this)} 
+								<Col sm={8}>
+									<Input type="textarea" standalone style={sty.textarea} 
+										placeholder="患者症状" 
+										onChange={evt=>this.symptomInputChanged(evt.target.value)} 
 										value={symptom}/>
 								</Col>
 							</Row>
@@ -133,36 +194,66 @@ export default class Prescripion extends React.Component {
 								<Col sm={2}>
 									<label>诊断:</label>
 								</Col>
-								<Col sm={10}>
-									<Input type="textarea" ref="diagnosis" standalone style={sty.textarea} 
-									placeholder="诊断结果" onChange={this.diagnosisInputChanged.bind(this)}
+								<Col sm={8}>
+									<Input type="textarea" standalone style={sty.textarea} 
+									placeholder="诊断结果"
+									onChange={evt=>this.diagnosisInputChanged(evt.target.value)}
 									value={diagnosis}/>
 								</Col>
 							</Row>
 							<Row>
 								<Col sm={2}>
-									<label>医嘱:</label>
+									<label>煎服方式:</label>
 								</Col>
-								<Col sm={10}>
-									<Input type="textarea" ref="comment" standalone style={sty.textarea} 
-									placeholder="医嘱" onChange={this.commentInputChanged.bind(this)}
-									value={comment}/>
+								<Col sm={8}>
+									<Input type="select" standalone placeholder="煎服方式"
+										onChange={evt=>this.commentInputChanged(evt.target.value)}
+										value={comment}>
+										<option value="200ml">200ml/包，一天2次</option>
+						      			<option value="100ml">100ml/包，一天3次</option>
+						      			<option value="other">其他：自己填写</option>
+									</Input>
 								</Col>
+							</Row>
+							<Row>
+								<Col sm={2}>
+									<label>订单类型:</label>
+								</Col>
+								<Col sm={5}>
+									<Input type="select" standalone 
+									value={type} onChange={evt=>this.typeChanged(evt.target.value)}>
+										<option value="1">线下开方</option>
+					      				<option value="2">转方</option>
+					      				<option value="3">膏方节</option>
+									</Input>
+								</Col>								
+							</Row>
+							{packUI}
+							<Row>
+								<Col sm={2}>
+									<label>诊后随访:</label>
+								</Col>
+								<Col sm={5}>
+									<Input type="text" standalone bsStyle={revisitwarningStyle}
+											placeholder="诊后随访" value={revistDuration} addonAfter="天"
+											onChange={evt=>this.revisitDurationChanged(evt.target.value)}/>
+								</Col>
+	
 							</Row>
 							<Row>
 								<Col sm={2}>
 									<label>贴数:</label>
 								</Col>
 								<Col sm={5}>
-									<Input type="text" ref="amount" standalone bsStyle={amountWarningStyle}
-											placeholder="药贴数" value={amount} 
-											onChange={this.amountInputChanged.bind(this)}/>
+									<Input type="text" standalone bsStyle={amountWarningStyle}
+											placeholder="药贴数" value={amount} addonAfter="贴" 
+											onChange={evt=>this.amountInputChanged(evt.target.value)}/>
 								</Col>
-								<Col sm={3}>
-									<Input type="checkbox" ref="decocted" standalone 
-											label="代煎" value={decocted}
-											placeholder="amount" 
-											onChange={this.decoctedChanged.bind(this)}/>
+								<Col sm={4}>
+									<Input type="checkbox" standalone 
+										label="需要代煎" value={decocted}
+										placeholder="amount" 
+										onChange={evt=>this.decoctedChanged(evt.target.checked)}/>
 								</Col>
 							</Row>
 							
@@ -178,7 +269,7 @@ export default class Prescripion extends React.Component {
 							</Row>
 							<Row>
 								<Col sm={12}>
-									<DrugTable drugs={drugs} />
+									<DrugTable drugs={drugs} model={this.model}/>
 								</Col>
 							</Row>
 							
@@ -187,70 +278,86 @@ export default class Prescripion extends React.Component {
 							<h3>常用药方</h3>
 							<Row>
 								<Col sm={12}>
-									<MyFavoritePrescriptions addFavoritePrescription={this.addFavoritePrescription}/>
+									<MyFavoritePrescriptions ref="myFavoritePrescriptions" addFavoritePrescription={(content)=>this.addFavoritePrescription(content)}/>
 								</Col>
 							</Row>
 							<div className="actionBtns">
 								<Button bsStyle="primary" bsSize="small" style={sty.toolbox} 
-									onClick={this.showPreview.bind(this)}>Preview</Button>
-								<Button bsStyle="primary" bsSize="small" style={sty.toolbox}>Save As</Button>
+									disabled={!previewValid} onClick={this.showPreview.bind(this)}>预览</Button>
+								<Button bsStyle="primary" bsSize="small" style={sty.toolbox}
+									disabled={drugs.length === 0} onClick={()=>this.showSaveToMyFavorite()}>保存药方</Button>
 							</div>
 						</Col>
 					</Row>			
 				</Grid>
 
-				
-
-				<PrescriptionPreview {...this.state} 
+				<PrescriptionPreview {...this.state} submitted={()=>this.submitted()}
 					onHide={this.closePreview.bind(this)} />
 
+				<SaveToMyFavoritePopover drugs={this.state.drugs}
+					favoriteSaved={()=>this.favoriteSaved()}
+					onHide={()=>this.closeSaveToMyFavorite()} 
+					showSaveToMyFavorite={this.state.showSaveToMyFavorite}/>
 			</div>
 		);
 	}
 
-	nameInputChanged() {
-		Model.updateName(this.refs.name.getValue());
+	nameInputChanged(val) {
+		this.model.updateName(val);
 	}
 
-	phoneInputChanged() {
-		Model.updatePhone(this.refs.phone.getValue());
+	phoneInputChanged(val) {
+		this.model.updatePhone(val);
 	}
 
-	sexInputChanged() {
-		Model.updateSex(this.refs.sex.getValue());
+	genderInputChanged(val) {
+		this.model.updateGender(val);
 	}
 
-	ageInputChanged() {
-		Model.updateAge(this.refs.age.getValue());
+	ageInputChanged(val) {
+		this.model.updateAge(val);
 	}
 
-	symptomInputChanged() {
-		Model.updateSymptom(this.refs.symptom.getValue());
+	symptomInputChanged(val) {
+		this.model.updateSymptom(val);
 	}
 
-	diagnosisInputChanged() {
-		Model.updateDiagnosis(this.refs.diagnosis.getValue());
+	diagnosisInputChanged(val) {
+		this.model.updateDiagnosis(val);
 	}
 
-	commentInputChanged() {
-		Model.updateComment(this.refs.comment.getValue());
+	commentInputChanged(val) {
+		this.model.updateComment(val);
 	}
 
-	amountInputChanged() {
-		Model.updateAmount(this.refs.amount.getValue());
+	amountInputChanged(val) {
+		this.model.updateAmount(val);
 	}
 
-	decoctedChanged(){
-		Model.updateDecocted(this.refs.decocted.getChecked());
+	decoctedChanged(val) {
+		this.model.updateDecocted(val);
+	}
+
+	revisitDurationChanged(val) {
+		this.model.updateRevisitDuration(val);
+	}
+
+	packChanged(val) {
+		this.model.updatePack(val);
+	}
+
+	typeChanged(val) {
+		this.model.updateType(val);
 	}
 
 	_addDrug(drug) {
-		Model.addDrugs([drug]);
+		this.model.addDrugs([drug]);
 	}
 
 	addFavoritePrescription(prescription) {
 		let drugs = ConvertionUtil.getDrugsFromPrescription(prescription);
-		Model.addDrugs(drugs);
+		console.log(this.model);
+		this.model.addDrugs(drugs);
 	}
 
 	closePreview() {
@@ -259,6 +366,23 @@ export default class Prescripion extends React.Component {
 
 	showPreview() {
 		this.setState({showPreview: true});
+	}
+
+	showSaveToMyFavorite() {
+		this.setState({showSaveToMyFavorite: true});
+	}
+
+	closeSaveToMyFavorite() {
+		this.setState({showSaveToMyFavorite: false});
+	}
+
+	submitted() {
+		this.closePreview();
+	}
+
+	favoriteSaved() {
+		this.closeSaveToMyFavorite();
+		this.refs.myFavoritePrescriptions.loadData();
 	}
 
 	_handleFileSelect(evt) {

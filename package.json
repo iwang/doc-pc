@@ -1,10 +1,10 @@
 {
-  "name": "material-ui-example",
-  "version": "0.8.0",
-  "description": "Sample project that uses material-ui",
+  "name": "gancao-doctor-web",
+  "version": "0.1.0",
+  "description": "gancao pc for doctor",
   "repository": {
     "type": "git",
-    "url": "https://github.com/callemall/material-ui.git"
+    "url": "http://todo.igancao.com:8660/wangzf/doc-pc.git"
   },
   "scripts": {
     "start": "webpack-dev-server --config webpack-dev-server.config.js --progress --inline --colors",
@@ -15,15 +15,21 @@
     "babel-eslint": "^4.0.5",
     "babel-loader": "^5.3.2",
     "babel-runtime": "^5.8.25",
+    "css-loader": "^0.22.0",
     "eslint": "^1.1.0",
     "eslint-loader": "^1.0.0",
     "eslint-plugin-react": "^3.2.2",
+    "file-loader": "^0.8.4",
+    "fixed-data-table": "^0.5.0",
     "history": "^1.12.6",
     "html-webpack-plugin": "^1.6.1",
+    "moment": "^2.10.6",
     "react-hot-loader": "^1.2.8",
     "react-router": "^1.0.0-rc3",
+    "style-loader": "^0.13.0",
     "transfer-webpack-plugin": "^0.1.4",
-    "webpack": "^1.11.0",
+    "url-loader": "^0.5.6",
+    "webpack": "^1.12.3",
     "webpack-dev-server": "^1.10.1"
   },
   "dependencies": {

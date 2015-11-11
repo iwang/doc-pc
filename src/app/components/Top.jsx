@@ -1,7 +1,7 @@
 import React from 'react';
 import Tab from 'material-ui/lib/tabs/tab';
 import Tabs from 'material-ui/lib/tabs/tabs';
-import { History } from 'react-router'
+import {History} from 'react-router'
 
 
 const Top = React.createClass({

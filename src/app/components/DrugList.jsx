@@ -3,25 +3,12 @@ import DrugSearchRow from './DrugSearchRow';
 import ConvertionUtil from '../services/ConvertionUtil'
 
 export default class DrugList extends React.Component {
-	getStyle() {
-		return {
-	      	searchList: {
-		      	position: "absolute",
-		      	top: 45,
-		      	zIndex: 1000,
-		      	backgroundColor: "#FFFFFF",
-	      	},
-		}
-	}
-
 
 	rowClicked(drug) {
 		this.props.rowClicked(drug);
 	}
 
 	render() {
-
-		let sty = this.getStyle();
 		let rows = [];
 		this.props.drugs.forEach(drug => {
 			let props = {
@@ -34,10 +21,17 @@ export default class DrugList extends React.Component {
 			
 			rows.push(row);	
 		}.bind(this));
-		return (
-			<div style={sty.searchList}>				
-				{rows}				
-			</div>
-		);
+		
+		if (rows.length > 0) {
+			return (
+				<ul className="drugSearchList">				
+					{rows}				
+				</ul>
+			);
+		} else {
+			return null;
+		}
+
+		
 	}
 }

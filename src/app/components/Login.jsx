@@ -2,10 +2,14 @@ import React from 'react';
 import {Input, Button, Label} from 'react-bootstrap';
 import {findDOMNode} from 'react-dom';
 import {$post, $get} from '../services/HttpService';
-import {Router, Route } from 'react-router';
+import {Router, Route, IndexRoute} from 'react-router';
 import ReactDOM from 'react-dom';
 import Main from './Main';
-import Prescripion from './Prescripion';
+import Prescripion from './Prescription';
+import Patients from './Patients';
+import ManageMyFavorite from './ManageMyFavorite';
+import StorageUtil from "../services/StorageUtil";
+import '../css/bootstrap.min.css';
 
 export default class Login extends React.Component {
 	constructor(props) {
@@ -13,24 +17,25 @@ export default class Login extends React.Component {
 	    this.state = {
 	    	errorMsg: "",
 	    	login: null,
+	    	logining: false,
+	    	claimed: true,
 		};
 		
 	}
 
 	componentDidMount() {
 	    console.log("componentDidMount");
-	    $get("doctor/check_session", {}, function(doctor) {
-	        if (doctor.status === 1) {
-	          console.log("session exists", doctor);
-	          localStorage.setItem("doctor", doctor);
+	    $get("doctor/check_session", {}, 
+	    success => {
+	    	console.log("session exists", success.data);
+	          localStorage.setItem("did", success.data.id);
 	          this.gotoMain();
-	        } else {
-	          console.log("session expired");
-	          this.setState({login: false});
-	          localStorage.removeItem("doctor");
-	          localStorage.removeItem("token");
-	        }
-	    }.bind(this));
+	    }, 
+	    fail=>{
+	    	console.log("session expired");
+	        this.setState({login: false});
+	        StorageUtil.cleanSession();
+	    });
 	    
 	}
 
@@ -39,7 +44,11 @@ export default class Login extends React.Component {
 	    ReactDOM.render(
 	      <Router>
 	        <Route path="/" component={Main}>
+	          <IndexRoute component={Prescripion} />
 	          <Route path="prescription" component={Prescripion} />
+	          <Route path="patients" component={Patients} />
+	          <Route path="manage-favorites" component={ManageMyFavorite} />
+	          <Route path="*" component={Prescripion}/>
 	        </Route>
 	      </Router>,
 	      document.getElementById('app')
@@ -55,6 +64,7 @@ export default class Login extends React.Component {
 			loginWindow: {
 				width: inputWidth + margin * 2,
 				margin: "auto",
+				marginTop: 200,
 				border: "1px #666666 solid",
 				paddingTop: margin/2,
 				paddingBottom: margin/2,
@@ -86,23 +96,25 @@ export default class Login extends React.Component {
 	}
 
 	render() {
+		console.log("rendering login");
 		let style = this.getStyle();
 		let content = null;
-		if (this.state.login === false) {
+		let {login, logining, claimed} = this.state;
+		if (login === false) {
 			content = 
 			<div style={style.loginWindow}>
 				<form onSubmit={this._onSubmit.bind(this)}>
-					<Input type="text" style={style.input} defaultValue="15618389655" 
+					<Input type="text" style={style.input} 
 						placeholder="手机号码" ref="phone"/>
-					<Input type="password" style={style.input} defaultValue="abc123_" 
-						placeholder="密码" ref="pwd"/>
+					<Input type="password" style={style.input} 
+						placeholder="密码" ref="pwd" />
 					<div style={style.checkboxContainer}> 
-						<Input type="checkbox" ref="claim" defaultChecked />	
+						<Input type="checkbox" ref="claim" checked={claimed} onChange={(evt)=>this.claimChanged(evt.target.checked)} />	
 						<div style={style.checkboxLabel}>我同意<a className="link">甘草用户使用协议</a></div>		 
 					</div>
 					<Label style={style.message} bsStyle="warning">{this.state.errorMsg}</Label>
 					<div>
-						<Button style={style.loginBtn} bsStyle="primary" bsSize="large"
+						<Button disabled={logining || !claimed} style={style.loginBtn} bsStyle="primary" bsSize="large"
 							type="submit">登录</Button>
 					</div>
 					
@@ -115,6 +127,12 @@ export default class Login extends React.Component {
 			</div>
 			
 		);
+	}
+
+	claimChanged(val) {
+		this.setState({
+			claimed: val,
+		});
 	}
 
 	_onSubmit(e) {
@@ -139,19 +157,23 @@ export default class Login extends React.Component {
 		}
 
 		if (valid) {
+			this.setState({
+				logining: true,
+			});
 			$post("doctor/login", 
 		      {phone: phoneInput, pwd: pwdInput},
-		      function(result) {
-		      	if (result.status === 1) {
-		        		localStorage.setItem("token", result.data.token);
-		        		localStorage.setItem("doctor", result.data);
-			        	this.gotoMain();
-		      	} else {
-		      		console.log(result.msg);
-		      		this.setState({errorMsg: result.msg});
-		      	}
-		        
-		      }.bind(this));
+		      success=> {
+		      	localStorage.setItem("token", success.data.token);
+        		localStorage.setItem("did", success.data.id);
+	        	this.gotoMain();
+	        	},
+	          fail=>{
+	          	this.setState({
+					logining: false,
+				});
+	      		this.setState({errorMsg: fail.msg});
+	          }
+		      	);
 		}
 	}
 }

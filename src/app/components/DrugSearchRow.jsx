@@ -22,9 +22,9 @@ export default class DrugSearchRow extends React.Component {
 		let additionStyle = this.props.selected ? sty. hoverColor : {};
 		return (
 			
-			<Button bsSize="medium" onClick={this._onClicked.bind(this)} className="drugSearchItem"
-				style={additionStyle} block>{drug.title}
-			</Button>
+			<li onClick={this._onClicked.bind(this)} className="drugSearchItem"
+				style={additionStyle}>{drug.title}
+			</li>
 		
 		);
 	}

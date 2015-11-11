@@ -1,9 +1,12 @@
 import React from 'react';
-import {Input} from 'react-bootstrap';
+import {Input, Glyphicon} from 'react-bootstrap';
 import {$post} from '../services/HttpService';
 import DrugList from './DrugList';
+import LoadingIcon from './LoadingIcon';
 import {keyMap} from '../services/Constants';
 import {findDOMNode} from 'react-dom';
+import Rx from 'rx';
+import EventEmitter from 'events';
 
 export default class SearchDrugInput extends React.Component {
 	constructor(props) {
@@ -12,8 +15,10 @@ export default class SearchDrugInput extends React.Component {
 	    	drugs: [],
 	    	selectedIndex: null,
 	    	keyword: "",
+	    	loading: false,
 		};
 		this._handleWindowClose.bind(this);
+		this.searchInputChangeEmitter = new EventEmitter();
 	}
 
 	componentDidMount() {
@@ -22,6 +27,28 @@ export default class SearchDrugInput extends React.Component {
         window.addEventListener('focus', this._handleWindowClose, true);
         // If we click anywhere outside of Typeahead, close the dropdown.
         window.addEventListener('click', this._handleWindowClose, false);
+
+        let source = Rx.Observable.fromEvent(this.searchInputChangeEmitter, 'change', 
+        	input=>input)
+        .sample(2000);
+
+        source.subscribe(
+	    keyword=> {
+	        if (keyword.trim() !== "") {
+	        	this.setState({loading:true});
+				$post("medicine/search", {kw: keyword}, result => {
+					this.setState({drugs:result.data, selectedIndex:0, loading:false});
+				});
+			} else {
+				this._close();
+			}
+	    },
+	    function (err) {
+	        console.log('Error: ' + err);   
+	    },
+	    function () {
+	        console.log('Completed');   
+	    });
     }
 
     componentWillUnmount() {
@@ -38,6 +65,7 @@ export default class SearchDrugInput extends React.Component {
 
 	_handleSearchInputChange() {
 		let keyword = this.refs.drugSearchInput.getValue();
+		this.searchInputChangeEmitter.emit("change", keyword);
 		const tmp = [
 			{title: "james", id: "11111", weight: ""}, 
 			{title: "jason", id: "21111", weight: ""}, 
@@ -45,26 +73,17 @@ export default class SearchDrugInput extends React.Component {
 			{title: "jaksone", id: "4", weight: ""}, 
 		]
 
-		if (keyword.trim() !== "") {
-			$post("medicine/search", {kw: keyword}, function(result){
-				if (result.data.length > 0) {
-					this.setState({drugs:result.data, selectedIndex: 0});
-				} else {
-					this._close();
-				}
-				
-			}.bind(this));
-			// let result = tmp.filter(item => item.title.indexOf(keyword) !== -1);
+		
+		// let result = tmp.filter(item => item.title.indexOf(keyword) !== -1);
+		// 	// if (result.length > 0) {
+		// 	// 	this.setState({drugs:result, selectedIndex: 0});
+		// 	// } else {
+		// 	// 	this._close();
+		// 	// }
 			
-			// if (result.length > 0) {
-			// 	this.setState({drugs:result, selectedIndex: 0});
-			// } else {
-			// 	this._close();
-			// }
-			
-		} else {
-			this._close();
-		}
+		// } else {
+		// 	this._close();
+		// }
 
 	}
 
@@ -134,14 +153,14 @@ export default class SearchDrugInput extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<div className="drugSearchInputWrapper">
 				<Input type="text" className="drugSearchInput" ref="drugSearchInput" standalone
 					onFocus={this._handleSearchInputChange.bind(this)}
 					placeholder="输入药方" onChange={this._handleSearchInputChange.bind(this)} 
 					onKeyDown={this._onKeyDown.bind(this)}/>
-				<DrugList drugs={this.state.drugs} rowClicked={this.selected.bind(this)}
+				<DrugList drugs={this.state.drugs} rowClicked={this.selected.bind(this)} 
 					selectedIndex={this.state.selectedIndex}/>
-				
+				<LoadingIcon loading={this.state.loading} />
 			</div>
 		);
 	}

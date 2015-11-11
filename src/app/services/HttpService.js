@@ -6,11 +6,11 @@ export default class HttpService {
 		let absUrl = prefix + apiUrl;
 		let token = localStorage.getItem("token");
 		let did = localStorage.getItem("did");
-		
 		if (did && data["did"] === undefined) {
 			data["did"] = did;
-			console.log("did", did);
 		}
+		
+		console.log("posting", apiUrl, data);
 
 		$.ajax({
 			url: absUrl,
@@ -21,11 +21,15 @@ export default class HttpService {
 	  		},
 		})
 		.done(function(result){
-			console.log("success", apiUrl, result.msg);
-			if (success) success(result);
+			console.log("Httpservice => success", apiUrl, result.msg);
+			if (success && result.status === 1) {
+				success(result);
+			} else if (fail) {
+				fail(result);
+			}
 		})
 		.fail(function(result){
-			console.log("error", apiUrl, data, result);
+			console.log("Httpservice => fail", apiUrl, data, result);
 			if (fail) fail(result);
 		})
 		.always(function(result){
@@ -34,9 +38,7 @@ export default class HttpService {
 	}
 
 	static $post(apiUrl, data, success, fail) {
-		
 		HttpService._ajax(apiUrl, "POST", data, success, fail);
-		
 	}
 
 	static $get(apiUrl, data, success, fail) {
