@@ -11,7 +11,13 @@ textarea {
     resize: none;
 }
 
-.no-padding .col-sm-2 {
+.glyphicon.center-icon {
+	position: fixed;
+    top: 50%;
+    left: 50%;
+}
+
+.row .no-padding {
 	padding-left: 0;
 	padding-right: 0;
 }
@@ -31,6 +37,33 @@ textarea {
 .modal-title {
 	text-align: center;
 	font-size: 20px;
+}
+
+body .navbar-default .navbar-brand {
+	color: white;
+}
+
+body .navbar-default {
+    background-color: #AA8E5E;
+    border-color: #85693A;
+}
+
+body .navbar-default .navbar-nav>li>a {
+	color: white;
+}
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
+	background-color: #FFF6E6!important;
+	color: #85693A;
+}
+
+body .navbar-default .navbar-nav>.open>a, body .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+	color: #85693A;
+    background-color: #FFF6E6!important;
+}
+
+.public_fixedDataTableRow_highlighted, .public_fixedDataTableRow_highlighted .public_fixedDataTableCell_main {
+	background-color: #FFF6E6;
 }
 
 .section-title {
@@ -87,6 +120,11 @@ body .modal-footer {
 
 .prescriptionForm .checkbox label {
 	width: auto;
+}
+
+.prescriptionForm .phone-check-result {
+	margin-top: 20px;
+	color: #4caf50;
 }
 
 .glyphicon.spinning.big {

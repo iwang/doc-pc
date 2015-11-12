@@ -33,7 +33,7 @@ export default class HttpService {
 			if (fail) fail(result);
 		})
 		.always(function(result){
-			console.log(type, apiUrl, token, result);
+			console.log("result=>", apiUrl, token, result);
 		});
 	}
 

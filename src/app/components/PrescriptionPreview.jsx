@@ -13,15 +13,15 @@ export default class PrescriptionPreview extends React.Component {
 			phone: this.props.phone,
 			result: this.props.diagnosis,
 			describe: this.props.symptom,
-			doc_advice: this.props.comment,
+			doc_advice: ConvertionUtil.getDecoctComment(this.props.decoctType, this.props.decoctComment),
 			amount: this.props.amount,
-			is_decoction: this.props.decocted,
+			is_decoction: this.props.decocted ? "1" : "0",
 			content: ConvertionUtil.drugsToJson(this.props.drugs),
 			receiver_age: this.props.age, 
 			receiver_gender: this.props.gender,
 			time_re: this.props.revistDuration,
 			type_id: this.props.type,
-			pack: this.props.pack,
+			pack: ConvertionUtil.getPackName(this.props.type_id, this.props.pack),
 		};
 
 		// only 膏方节 need pack info
@@ -79,12 +79,13 @@ export default class PrescriptionPreview extends React.Component {
 	}
 
 	render() {
-		let {name, phone, gender, age, diagnosis, decocted, symptom, comment, amount, type, drugs, revistDuration, showPreview} = this.props;
+		let {name, phone, gender, age, diagnosis, decocted, symptom, decoctType, decoctComment, amount, type, drugs, revistDuration, showPreview} = this.props;
 		let genderName = ConvertionUtil.getGenderName(gender);
 		let typeName = ConvertionUtil.getTypeName(type);
 		let decoctedName = decocted ? "代煎" : "";
 		let {loading, total, valid, errorMsg, submitting} = this.state;
-		
+		decoctComment = ConvertionUtil.getDecoctComment(decoctType, decoctComment);
+
 		let errorFooter = null;
 		if (errorMsg !== "") {
 			errorFooter = <Row className="footer-row error">
@@ -159,10 +160,14 @@ export default class PrescriptionPreview extends React.Component {
 						<Col sm={4}>
 							<label>订单类型:</label> {typeName}
 						</Col>
+						<Col sm={2}>
+							<label>{decoctedName}</label>
+						</Col>
+						
 			    	</Row>
 			    	<Row className="footer-row">
 			    		<Col sm={7}>
-							<label>煎服方式:</label> {comment}  {decoctedName}
+							<label>煎服方式:</label> {decoctComment}
 						</Col>
 						{totalFooter}
 			    	</Row>

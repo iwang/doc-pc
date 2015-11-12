@@ -11,7 +11,6 @@ export default class TopNav extends React.Component {
 	}
 
 	constructor(props) {
-		console.log(Router);
 	    super(props);
 	    this.state = this.getInitState();
 	}
@@ -23,7 +22,6 @@ export default class TopNav extends React.Component {
 	}
 
 	selected(index){
-		console.log(index);
 		this.setState({
 			index: index,
 		})

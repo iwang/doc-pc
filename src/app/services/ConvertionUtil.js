@@ -19,6 +19,14 @@ export default class ConvertionUtil {
 		"other": "其他：自己填写", 
 	}
 
+	static getPackName(type, name) {
+		return type !== "3" ? ConvertionUtil.prescriptionTypeMap[type] : "";
+	}
+
+	static getDecoctComment(type, comment) {
+		return type !== "other" ? ConvertionUtil.decoctMethod[type] : comment;
+	}
+
 	static getOptions(options){
 		//TODO, get options
 	}

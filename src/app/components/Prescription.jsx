@@ -6,7 +6,9 @@ import PrescriptionPreview from './PrescriptionPreview.jsx';
 import Prescription from '../models/Prescription';
 import ConvertionUtil from '../services/ConvertionUtil';
 import MyFavoritePrescriptions from './MyFavoritePrescriptions';
-import SaveToMyFavoritePopover from './SaveToMyFavoritePopover'
+import SaveToMyFavoritePopover from './SaveToMyFavoritePopover';
+import LoadingIcon from './LoadingIcon';
+import {$post} from '../services/HttpService';
 import {Grid, Row, Col, Input, Button, Thumbnail, Glyphicon} from 'react-bootstrap';
 import '../css/main.css';
 
@@ -45,28 +47,57 @@ export default class Prescripion extends React.Component {
 	}
 
 	getInitState() {
+		// return {
+		// 	name: "",
+		// 	phone: "",
+		// 	gender: 1,
+		// 	age: "",
+		// 	symptom: "",
+		// 	diagnosis: "",
+		// 	amount: "",
+		// 	revistDuration: "",
+		// 	type: "1",
+		// 	pack:"膏体罐装",
+		//  	decoctType: "200ml",
+		//  	decoctComment: "",
+		// 	drugs: [],
+		// 	phoneValid: false,
+		// 	nameValid: false,
+		// 	ageValid: false,
+		// 	amountValid: false,
+		// 	revistDurationValid: false,
+		// 	decocted: false,
+		// 	images:[],
+		// 	showPreview: false,
+		// };
+
+
 		return {
-			name: "",
-			phone: "",
+			name: "王志峰",
+			phone: "12344423333",
 			gender: 1,
-			age: "",
-			symptom: "",
-			diagnosis: "",
-			amount: "",
-			revistDuration: "",
+			age: "12",
+			symptom: "天汽模的第三方",
+			diagnosis: "阿大幅度减少",
+			decoctType: "200ml",
+		 	decoctComment: "",
+			amount: "11",
+			revistDuration: "5",
 			type: "1",
 			pack:"膏体罐装",
-		 comment: "",
 			drugs: [],
-			phoneValid: false,
-			nameValid: false,
-			ageValid: false,
-			amountValid: false,
-			revistDurationValid: false,
+			phoneValid: true,
+			nameValid: true,
+			ageValid: true,
+			amountValid: true,
+			revistDurationValid: true,
 			decocted: false,
 			images:[],
 			showPreview: false,
-		};
+			phoneCheckResult: "",
+			checkingPhone: false,
+			lastCheckedPhone: null,
+		}
 	}
 
 
@@ -90,7 +121,8 @@ export default class Prescripion extends React.Component {
 		if (!this.state) return (null);
 		let sty = this.getStyles();
 		
-		let {name, phone, gender, age, diagnosis, symptom, comment, amount, decocted, type, pack, drugs, revistDuration, phoneValid, nameValid, ageValid, amountValid, revistDurationValid} = this.state;
+decoctType
+		let {name, phone, gender, age, diagnosis, symptom, decoctType, decoctComment, amount, decocted, type, pack, drugs, revistDuration, phoneValid, nameValid, ageValid, amountValid, revistDurationValid, checkingPhone, phoneCheckResult} = this.state;
 		let phoneWarningStyle = phoneValid ? "" : "error";
 		let nameWarningStyle = nameValid ? "" : "error";
 		let ageWarningStyle = ageValid ? "" : "error";
@@ -99,8 +131,8 @@ export default class Prescripion extends React.Component {
 
 		let previewValid = phoneValid&&nameValid&&ageValid&&amountValid&&drugs.length>0;
 		let previewDiabled = previewValid ? "" : "disabled";
+		
 		let packUI = null;
-
 		if (type === "3") {
 			packUI = <Row>
 						<Col sm={2}>
@@ -117,14 +149,26 @@ export default class Prescripion extends React.Component {
 					</Row>;
 		}
 
+		let decoctTypeInput = null;
+		if (decoctType === "other") {
+			decoctTypeInput = <Row>
+				<Col smOffset={2} sm={8}>
+					<Input type="text" standalone placeholder="煎服方式"
+						onChange={evt=>this.decoctCommentChanged(evt.target.value)}
+						value={decoctComment} />
+						
+				</Col>
+			</Row>;
+		}
+
 		return (
 			<div>
-				<Grid className="prescriptionForm form no-padding">
+				<Grid className="prescriptionForm form">
 					<Row>
 						<Col sm={4} className="patientInfo">
 							<h3>患者信息</h3>
 							<Row>
-								<Col sm={2}>
+								<Col sm={2} className="no-padding">
 									<label>姓名:</label>
 								</Col>
 								<Col sm={5}>
@@ -134,19 +178,23 @@ export default class Prescripion extends React.Component {
 								</Col>
 							</Row>
 							<Row>
-								<Col sm={2}>
+								<Col sm={2} className="no-padding">
 									<label>手机:</label>
 								</Col>
 
 								<Col sm={5}>
 									<Input standalone type="text" placeholder="手机号码" 
-									value={phone} bsStyle={phoneWarningStyle}
-										onChange={evt=>this.phoneInputChanged(evt.target.value)}/>
-									
+										value={phone} bsStyle={phoneWarningStyle}
+										onChange={evt=>this.phoneInputChanged(evt.target.value)}
+										onBlur={evt=>this.phoneInputBlur(evt.target.value)}/>
+								</Col>
+								<Col sm={4} className="no-padding">
+									<div className="phone-check-result">{phoneCheckResult}</div>
+									<LoadingIcon loading={checkingPhone} />
 								</Col>
 							</Row>
 							<Row>
-								<Col sm={2}>
+								<Col sm={2} className="no-padding">
 									<label>性别:</label>
 								</Col>
 								<Col sm={5}>
@@ -158,7 +206,7 @@ export default class Prescripion extends React.Component {
 								</Col>								
 							</Row>
 							<Row>
-								<Col sm={2}>
+								<Col sm={2} className="no-padding">
 									<label>年龄:</label>
 								</Col>
 
@@ -169,7 +217,7 @@ export default class Prescripion extends React.Component {
 								</Col>
 							</Row>
 							<Row>
-								<Col sm={2}>
+								<Col sm={2} className="no-padding">
 									<label>症状:</label>
 								</Col>
 								<Col sm={8}>
@@ -191,7 +239,7 @@ export default class Prescripion extends React.Component {
 							 	{this.state.images}
 							 </Row>
 							<Row>
-								<Col sm={2}>
+								<Col sm={2} className="no-padding">
 									<label>诊断:</label>
 								</Col>
 								<Col sm={8}>
@@ -202,21 +250,22 @@ export default class Prescripion extends React.Component {
 								</Col>
 							</Row>
 							<Row>
-								<Col sm={2}>
+								<Col sm={2} className="no-padding">
 									<label>煎服方式:</label>
 								</Col>
 								<Col sm={8}>
 									<Input type="select" standalone placeholder="煎服方式"
-										onChange={evt=>this.commentInputChanged(evt.target.value)}
-										value={comment}>
+										onChange={evt=>this.decoctTypeChanged(evt.target.value)}
+										value={decoctType}>
 										<option value="200ml">200ml/包，一天2次</option>
 						      			<option value="100ml">100ml/包，一天3次</option>
 						      			<option value="other">其他：自己填写</option>
 									</Input>
 								</Col>
 							</Row>
+							{decoctTypeInput}
 							<Row>
-								<Col sm={2}>
+								<Col sm={2} className="no-padding">
 									<label>订单类型:</label>
 								</Col>
 								<Col sm={5}>
@@ -230,7 +279,7 @@ export default class Prescripion extends React.Component {
 							</Row>
 							{packUI}
 							<Row>
-								<Col sm={2}>
+								<Col sm={2} className="no-padding">
 									<label>诊后随访:</label>
 								</Col>
 								<Col sm={5}>
@@ -241,7 +290,7 @@ export default class Prescripion extends React.Component {
 	
 							</Row>
 							<Row>
-								<Col sm={2}>
+								<Col sm={2} className="no-padding">
 									<label>贴数:</label>
 								</Col>
 								<Col sm={5}>
@@ -310,6 +359,24 @@ export default class Prescripion extends React.Component {
 		this.model.updatePhone(val);
 	}
 
+	phoneInputBlur(val) {
+		if (this.state.phoneValid && this.state.phone !== this.lastCheckPhone) {
+			this.setState({
+				checkingPhone: true,
+				phoneCheckResult: "",
+			});
+			$post("user/check_phone_sms", {
+				phone: val,
+			}, success=>{
+				this.setState({
+					checkingPhone: false,
+					phoneCheckResult: success.msg,
+					lastCheckPhone: val,
+				});
+			});
+		}
+	}
+
 	genderInputChanged(val) {
 		this.model.updateGender(val);
 	}
@@ -326,8 +393,12 @@ export default class Prescripion extends React.Component {
 		this.model.updateDiagnosis(val);
 	}
 
-	commentInputChanged(val) {
-		this.model.updateComment(val);
+	decoctTypeChanged(val) {
+		this.model.updateDecoctType(val);
+	}
+
+	decoctCommentChanged(val) {
+		this.model.updateDecoctComment(val);
 	}
 
 	amountInputChanged(val) {
@@ -356,7 +427,6 @@ export default class Prescripion extends React.Component {
 
 	addFavoritePrescription(prescription) {
 		let drugs = ConvertionUtil.getDrugsFromPrescription(prescription);
-		console.log(this.model);
 		this.model.addDrugs(drugs);
 	}
 
@@ -378,6 +448,7 @@ export default class Prescripion extends React.Component {
 
 	submitted() {
 		this.closePreview();
+		this.setState(this.getInitState());
 	}
 
 	favoriteSaved() {

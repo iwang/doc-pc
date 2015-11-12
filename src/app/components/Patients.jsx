@@ -47,10 +47,23 @@ export default class Patients extends React.Component {
 	}
 
 	render() {
+		
+		let {page, patients, loaded} = this.state;
 
-		let {page, patients} = this.state;
+		let loadingIcon = null;
+		let buttons = null;
+		if (!loaded) {
+			loadingIcon = <span className="glyphicon glyphicon-refresh spinning big center-icon"></span>;
+		} else {
+			buttons = <ButtonToolbar style={{'margin-top': '20px'}}>
+		      <Button disabled={page === 0} bsStyle="primary" onClick={()=>this.paging(page-1)}>上一页</Button>
+		      <Button bsStyle="primary" onClick={()=>this.paging(page+1)}>下一页</Button>
+		    </ButtonToolbar>;
+		}
+
 		let rows = patients.map(patient=>{
 			let {describe, phone, content, receiver_name, receiver_phone, type_id, result, receiver_age, receiver_gender, amount, pack, time_revisit, money_total, is_decoction} = patient;
+			console.log(is_decoction);
 			return [
 				receiver_name,
 				phone,
@@ -61,14 +74,15 @@ export default class Patients extends React.Component {
 				money_total+"元",
 				ConvertionUtil.getDateStr(time_revisit),
 				amount+"贴",
-				is_decoction ? "代煎" : "",
+				is_decoction==="0" ?  "" : "代煎",
 				ConvertionUtil.getTypeName(type_id),
 
 			]
 		});
 
 		return (
-			<div>
+			<div style={{'margin-left': '40px'}}>
+			{loadingIcon}
 			<Table
 		    rowHeight={50}
 		    rowGetter={rowIndex=>rows[rowIndex]}
@@ -124,8 +138,8 @@ export default class Patients extends React.Component {
 		      dataKey={8}
 		    />
 		     <Column
-		      label="煎服方式"
-		      width={80}
+		      label="代煎"
+		      width={60}
 		      dataKey={9}
 		    />
 		    <Column
@@ -134,10 +148,7 @@ export default class Patients extends React.Component {
 		      dataKey={10}
 		    />
 		  </Table>
-		  	<ButtonToolbar>
-		      <Button disabled={page === 0} bsStyle="primary" onClick={()=>this.paging(page-1)}>上一页</Button>
-		      <Button bsStyle="primary" onClick={()=>this.paging(page+1)}>下一页</Button>
-		    </ButtonToolbar>
+		  	{buttons}
 		  </div>
 		);
 	}

@@ -1,29 +1,6 @@
 import Rx from 'rx';
 import ConvertionUtil from '../services/ConvertionUtil';
 
-// let state = {
-// 	name: "王志峰",
-// 	phone: "12344423333",
-// 	gender: 1,
-// 	age: "12",
-// 	symptom: "天汽模的第三方",
-// 	diagnosis: "阿大幅度减少",
-// 	comment: "每天一次，一次两片",
-// 	amount: "11",
-// 	revistDuration: "5",
-// 	type: "1",
-// 	pack:"膏体罐装",
-// 	drugs: [],
-// 	phoneValid: true,
-// 	nameValid: true,
-// 	ageValid: true,
-// 	amountValid: true,
-// 	revistDurationValid: true,
-// 	decocted: true,
-// 	images:[],
-// 	showPreview: false,
-// }
-
 export default class Prescription {
 	constructor(model) {
 	    this.model = model;
@@ -41,10 +18,12 @@ export default class Prescription {
 
 	updatePhone(val) {
 		val = val.trim();
-		let valid = this._validPhone(val);
-		console.log("model -> updatePhone", val, valid);
-		this.model.phone = val;
-		this.model.phoneValid = valid;
+		let validInput = this._validPhoneInput(val);
+		console.log("model -> updatePhone", val, validInput);
+		if (validInput) {
+			this.model.phone = val;
+			this.model.phoneValid = this._validPhone(val);
+		}
 		this.subjects.onNext(this.model);
 	}
 
@@ -97,9 +76,15 @@ export default class Prescription {
 		this.subjects.onNext(this.model);
 	}
 
-	updateComment(val) {
-		console.log("model -> updateComment", val);
-		this.model.comment = val;
+	updateDecoctType(val) {
+		console.log("model -> updateDecoctType", val);
+		this.model.decoctType = val;
+		this.subjects.onNext(this.model);
+	}
+
+	updateDecoctComment(val) {
+		console.log("model -> updateDecoctComment", val);
+		this.model.decoctComment = val;
 		this.subjects.onNext(this.model);
 	}
 
@@ -141,6 +126,10 @@ export default class Prescription {
 
 	_validPhone(val) {
 		return /^1(\d){10}$/.test(val);
+	}
+
+	_validPhoneInput(val) {
+		return /^(\d){1,11}$/.test(val) || val === "";
 	}
 
 	_validDrugWeigth(val) {

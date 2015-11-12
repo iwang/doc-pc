@@ -28,8 +28,14 @@ export default class Login extends React.Component {
 	    $get("doctor/check_session", {}, 
 	    success => {
 	    	console.log("session exists", success.data);
-	          localStorage.setItem("did", success.data.id);
-	          this.gotoMain();
+	    	  if (success.data.id) {
+	    	  	localStorage.setItem("did", success.data.id);
+	          	this.gotoMain();
+	    	  } else {
+	    	  	this.setState({login: false});
+	       		 StorageUtil.cleanSession();
+	    	  }
+	          
 	    }, 
 	    fail=>{
 	    	console.log("session expired");
