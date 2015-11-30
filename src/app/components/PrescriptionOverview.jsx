@@ -7,7 +7,7 @@ export default class PrescriptionOverview extends React.Component {
 
 			return <li key={drug.key}>
 				<span className="drug-title">{drug.title}</span>
-				<span className="drug-weight">{drug.weight}克</span>
+				<span className="drug-weight">{drug.weight}{drug.unit}</span>
 				<span className="drug-comment">{drug.comment}</span>
 			</li>
 		});

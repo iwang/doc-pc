@@ -22,9 +22,6 @@ const Top = React.createClass({
 		);
 	},
 	_handleTabActive(tab){
-		console.log(this.history);
-		//console.log(this.props.history);
-		//console.log(tab.props.route);
 	    this.history.pushState(null, tab.props.route);
 	  },
 });

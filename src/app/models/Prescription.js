@@ -2,9 +2,81 @@ import Rx from 'rx';
 import ConvertionUtil from '../services/ConvertionUtil';
 
 export default class Prescription {
-	constructor(model) {
-	    this.model = model;
-	    this.subjects = new Rx.BehaviorSubject(model);
+	getInitValue() {
+		return {
+			name: "",
+			phone: "",
+			gender: 1,
+			age: "",
+			symptom: "",
+			diagnosis: "",
+			amount: "",
+			revistDuration: "",
+			type: "1",
+			pack:"膏体罐装",
+		 	decoctType: "200ml",
+		 	decoctComment: "",
+			drugs: [],
+			phoneValid: false,
+			nameValid: false,
+			amountValid: false,
+			revistDurationValid: false,
+			decocted: false,
+			includeFee: false,
+			images:[],
+			showPreview: false,
+		};
+
+
+		// return {
+		// 	name: "王志峰",
+		// 	phone: "12344423333",
+		// 	gender: 1,
+		// 	age: "12",
+		// 	symptom: "天汽模的第三方",
+		// 	diagnosis: "阿大幅度减少",
+		// 	decoctType: "200ml",
+		//  	decoctComment: "",
+		// 	amount: "11",
+		// 	revistDuration: "5",
+		// 	type: "1",
+		// 	pack:"膏体罐装",
+		// 	drugs: [],
+		// 	phoneValid: true,
+		// 	nameValid: true,
+		// 	ageValid: true,
+		// 	amountValid: true,
+		// 	revistDurationValid: true,
+		// 	decocted: false,
+		// 	images:[],
+		// 	showPreview: false,
+		// 	phoneCheckResult: "",
+		// 	checkingPhone: false,
+		// 	lastCheckedPhone: null,
+		// }
+	}
+
+	static _instance = null;
+
+	static getInstance() {
+		if (Prescription._instance === null) {
+			Prescription._instance = new Prescription();
+		}
+		return Prescription._instance;
+	}
+
+	constructor() {
+	    this.model = this.getInitValue();
+	    this.subjects = new Rx.BehaviorSubject(this.model);
+	}
+
+	update(model) {
+		this.model = model;
+		this.subjects.onNext(this.model);
+	}
+
+	reset() {
+		this.update(this.getInitValue());
 	}
 
 	updateName(val) {
@@ -29,12 +101,10 @@ export default class Prescription {
 
 	updateAge(val) {
 		val = val.trim();
-		// no need to sync ageValid with valid because invalid input will be rejected except empty string
 		let valid = this._validAge(val);
 		console.log("model -> updateAge", val, valid);
 		if (valid) {
 			this.model.age = val;
-			this.model.ageValid = val !== "";
 		}
 		this.subjects.onNext(this.model);
 	}
@@ -43,7 +113,6 @@ export default class Prescription {
 		val = val.trim();
 		let valid = this._validAmount(val);
 		console.log("model -> updateAmount", val);
-		// no need to sync ageValid with valid because invalid input will be rejected except empty string
 		if (valid) {
 			this.model.amount = val;
 			this.model.amountValid = val !== "";
@@ -56,7 +125,6 @@ export default class Prescription {
 		val = val.trim();
 		let valid = this._validRevistDuration(val);
 		console.log("model -> updateRevisitDuration", val);
-		// no need to sync ageValid with valid because invalid input will be rejected except empty string
 		if (valid) {
 			this.model.revistDuration = val;
 			this.model.revistDurationValid = val !== "";
@@ -100,6 +168,12 @@ export default class Prescription {
 		this.subjects.onNext(this.model);
 	}
 
+	updateIncludeFee(val) {
+		console.log("model -> updateIncludeFee", val);
+		this.model.includeFee = val;
+		this.subjects.onNext(this.model);
+	}
+
 	updateType(val) {
 		console.log("model -> updateType", val);
 		this.model.type = val;
@@ -133,7 +207,7 @@ export default class Prescription {
 	}
 
 	_validDrugWeigth(val) {
-		return /^(\d)+$/.test(val) || val === ""
+		return /^(\d)+(.)?(\d)*$/.test(val) || val === ""
 	}
 
 	_validName(val) {
@@ -170,6 +244,12 @@ export default class Prescription {
 			this.subjects.onNext(this.model);
 		}
 
+	}
+
+	checkDuplicate(drug) {
+		return this.model.drugs.some(d=>{
+			return d.id === drug.id;
+		});
 	}
 
 	addDrugs(drugs) {

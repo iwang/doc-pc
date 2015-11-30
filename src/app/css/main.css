@@ -1,14 +1,57 @@
 body {
-  font: 14px Helvetica,Arial,sans-serif;
+  font: 14px "微软雅黑", Helvetica,Arial,sans-serif;
   line-height: 20px;
+  background-color: #F2F2F2;
+  background-image: url(../imgs/news-bg.jpg);
 }
 
 input {
 	font-family: Helvetica,Arial,sans-serif;
 }
 
+body .checkbox label {
+	margin-top: 8px;
+	font-weight: 700;
+}
+
+body .pull-right {
+	float: right;
+}
+
+body .title {
+	display: inline-block;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+body .disabled {
+	color: #CCCCCC;
+}
+
+body .inline-block {
+	display: inline-block;
+}
+
+body .top-align {
+	vertical-align: top;
+}
+
+.hori-center {
+	display: inline-block;
+    position: absolute;
+    left: 50%;
+}
+
+table tr {
+	background-color: #F2F2F2;
+}
+
 textarea {
     resize: none;
+}
+
+body textarea.large {
+	height: 100px;
 }
 
 .glyphicon.center-icon {
@@ -21,6 +64,11 @@ textarea {
 	padding-left: 0;
 	padding-right: 0;
 }
+
+.row .no-padding-left {
+	padding-left: 0;
+}
+
 
 .link {
 	text-decoration: underline;
@@ -48,6 +96,10 @@ body .navbar-default {
     border-color: #85693A;
 }
 
+body .navbar {
+	margin-bottom: 0;
+}
+
 body .navbar-default .navbar-nav>li>a {
 	color: white;
 }
@@ -69,6 +121,11 @@ body .navbar-default .navbar-nav>.open>a, body .navbar-default .navbar-nav>.open
 .section-title {
 	padding-bottom: 2px;
 	border-bottom: 1px solid #CCCCCC;
+}
+
+.prescripton-btn {
+	margin-top: 10px;
+	margin-left: 10px;
 }
 
 body .modal-footer {
@@ -102,10 +159,6 @@ body .modal-footer {
 
 .prescriptionForm .input-group .form-control {
 	margin-top: 0;
-}
-
-.prescriptionForm .btns Button {
-	margin-top: 10px;
 }
 
 .prescriptionForm table {
@@ -149,7 +202,7 @@ body .modal-footer {
 .actionBtns {
 	position: absolute;
 	right: 0px;
-	top: -12px;
+	top: 16px;
 }
 
 
@@ -177,6 +230,7 @@ body .modal-footer {
   	width: 200px;
 	max-height: 300px;
 	overflow-y: scroll;
+	overflow-x: hidden;
 }
 
 .prescriptionForm .drugSearchList li:hover {
@@ -192,14 +246,23 @@ body .modal-footer {
 	vertical-align: middle!important; 
 }
 
+
+
+a {
+	cursor: pointer;
+}
+
 .drug-row .drug-id {
-	width: 50px;
-	
+	width: 25px;
+	text-align:center;
+}
+
+.drug-row .edit.drug-title {
+	width: 40px;
 }
 
 .drug-row .drug-title {
-	width: 150px;
-	font-weight: bold;
+	width: 120px;
 }
 
 .drug-row .drug-weight {
@@ -207,17 +270,21 @@ body .modal-footer {
 	color: red;
 }
 
+.drug-row .edit.drug-weight {
+	width: 30px;
+}
+
 .drug-row .drug-comment {
 	width: 40px;
 	color: #CCCCCC;
 }
 
-.drug-row .drug-comment.editable {
-	width: 80px;
+.drug-row .edit.drug-comment {
+	width: 56px;
 }
 
 .drug-row .drug-op {
-	width: 40px;
+	width: 30px;
 }
 
 .drug-row span {
@@ -232,6 +299,16 @@ body .modal-footer {
 	background-color: #f9f9f9;
 }
 
+
+.editDrugTable td {
+	text-align: center;
+}
+
+.editDrugTable th {
+	text-align: center;
+	background-color: #CCCCCC;
+}
+
 ul {
 	padding-left: 0;
 }
@@ -240,13 +317,9 @@ li {
 	list-style:none;
 }
 
-.favor-prescription .title {
-	width: 80px;
-	display: inline-block;
-}
-
-.favor-prescription .action {
-	margin-left: 5px;
+.grey-bg {
+	background-color: #F2F2F2;
+	border: 1px solid #CCCCCC;
 }
 
 .prescription-preview td {
@@ -280,13 +353,38 @@ li {
 
 .prescription-preview .total {
 	color: red;
-	font-size: 20px;
 }
 
 .prescription-preview .submit {
-	margin-top: 15px;
+	position: absolute;
+	bottom: 20px;
+	right: 40px;
 }
 
-.save-to-favorite-popover label{
+.my-favor .link {
+	margin-right: 5px;
+}
 
+.patient-item {
+	border: 1px solid #CCCCCC;
+	margin: 5px 0;
+	background-color: #F2F2F2;
+	padding: 25px 0;
+}
+
+.patient-item .sec1 {
+	font-size: 18px;
+}
+
+.patient-item .sec2 {
+	margin-top: 10px;
+}
+
+.patient-item .sec3 {
+	text-align: right;
+    padding-right: 25px;
+}
+
+.patient-item .btn {
+	padding-top: 6px;
 }

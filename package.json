@@ -30,7 +30,8 @@
     "transfer-webpack-plugin": "^0.1.4",
     "url-loader": "^0.5.6",
     "webpack": "^1.12.3",
-    "webpack-dev-server": "^1.10.1"
+    "webpack-dev-server": "^1.10.1",
+    "webpack-strip": "^0.1.0"
   },
   "dependencies": {
     "jquery": "^2.1.4",

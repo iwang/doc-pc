@@ -29,7 +29,6 @@ export default class SaveToMyFavoritePopover extends React.Component {
 	}
 
 	componentWillUnmount() {
-		console.log("dispose");
 		this.modelDisposal.dispose();
 
 	}
@@ -72,7 +71,7 @@ export default class SaveToMyFavoritePopover extends React.Component {
 		//if (!showSaveToMyFavorite) return null;
 		let {title, titleValid, submitting, errorMsg} = this.state;
 		let submitLabel = submitting ? "保存中" : "保存";
-		let titleWarningStyle = titleValid ? "" : "error";
+		let titleWarningStyle = titleValid ? null : "error";
 		let valid = titleValid;
 
 		let errorFooter = null;

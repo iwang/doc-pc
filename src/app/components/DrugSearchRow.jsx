@@ -11,7 +11,6 @@ export default class DrugSearchRow extends React.Component {
 	}
 
 	_onClicked() {
-		console.log("_onClicked");
 		this.props.rowClicked(this.props.drug);
 	}
 

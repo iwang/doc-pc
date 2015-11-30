@@ -39,8 +39,6 @@ const DiagnosePage = React.createClass({
 		};
 	},
 	render() {
-		console.log("rendersss"); 
-		
 		let sty = this.getStyles();
 		return (
 			<div>

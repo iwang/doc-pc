@@ -1,0 +1,207 @@
+body {
+    font-family: "微软雅黑";
+    position: relative;
+}
+li {
+    list-style: outside none none;
+}
+img {
+    border: 0 none;
+}
+
+.login .header {
+	width: 100%;
+	min-width: 960px;
+	height: 100px;
+	background-image: url("http://www.igancao.com/static/web/css/../img/header-bg.jpg");
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.login .header-main {
+	position: relative;
+	width: 960px;
+	height: 100%;
+	margin: 0 auto;
+}
+
+.login .logo {
+	width: 180px;
+	height: 50px;
+	margin-top: 25px;
+	float: left;
+	overflow: hidden;
+}
+
+.login .logo a {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.login .nav-left {
+	width: 600px;
+	height: 45px;
+	margin-top: 28px;
+	float: right;
+	overflow: hidden;
+}
+
+.login .nav-left {
+	width: 600px;
+	height: 45px;
+	margin-top: 28px;
+	float: right;
+	overflow: hidden;
+}
+.login .nav-left li {
+	width: 135px;
+	height: 45px;
+	margin-left: 50px;
+	float: right;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.login .nav-left li:hover {
+	background-image: url(../imgs/nav_bg.png);
+}
+.login .nav-left li.navon {
+	background-image: url(../imgs/nav_bg.png);
+}
+.login .nav-left li a {
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+.login .nav-left li a.hover {
+	display: none;
+}
+
+.login .banner {
+	position: relative;
+	width: 100%;
+	height: 710px;
+	overflow: hidden;
+}
+.login .info {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -140px;
+	margin-left: -380px;
+	width: 760px;
+	height: 280px;
+	z-index: 2;
+}
+.login .info-title {
+	width: 100%;
+	height: 60px;
+	overflow: hidden;
+}
+.login .info-cont {
+	width: 100%;
+	height: 100px;
+	margin-top: 35px;
+	overflow: hidden;
+}
+.login .info-down {
+	width: 250px;
+	height: 62px;
+	margin: 0 auto;
+	overflow: hidden;
+}
+.login .info-down input {
+	width: 100%;
+	height: 62px;
+	border: 0;
+	background-color: transparent;
+	background-image: url(../imgs/info-down.png);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.login .banner ul {
+	position: relative;
+	width: 100%;
+	z-index: 1;
+}
+.login .banner ul li {
+	position: relative;
+	width: 100%;
+	height: 710px;
+	float: left;
+	overflow: hidden;
+}
+
+.login .info-input {
+	width: 250px;
+	height: 50px;
+	margin: 0 auto;
+	overflow: hidden;
+	text-align: center;
+	cursor: pointer;
+}
+
+.login .page-footer {
+	width: 100%;
+	min-width: 960px;
+	height: 520px;
+	background-image: url(../imgs/page_bottom.jpg);
+	background-repeat: no-repeat;
+	background-position: top center;
+}
+
+.login .index-footer-main {
+	width: 960px;
+	height: 365px;
+	overflow: hidden;
+	margin: 0 auto;
+	background-image: url(../imgs/footer-main.png);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.login .gotop {
+	width: 135px;
+	height: 35px;
+	margin-top: 310px;
+	margin-left: auto;
+	margin-right: auto;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.login .index-footer-bottom {
+	width: 960px;
+	height: 115px;
+	margin: 0 auto;
+	overflow: hidden;
+}
+
+.login .bottom-nav {
+	width: 182px;
+	height: 25px;
+	margin: 0 auto;
+	overflow: hidden;
+}
+
+.login .bottom-nav a {
+	width: 70px;
+	height: 25px;
+	float: left;
+	margin-right: 42px;
+	overflow: hidden;
+}
+
+.login .bottom-info {
+	width: 100%;
+	margin-top: 40px;
+	text-align: center;
+}
+
+.login .bottom-info p {
+	font-size: 12px;
+	line-height: 20px;
+	color: #828282;
+}

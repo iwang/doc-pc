@@ -32,7 +32,7 @@ export default class SearchDrugInput extends React.Component {
         	input=>input)
         .sample(2000);
 
-        source.subscribe(
+        this.inputChangeDisposal = source.subscribe(
 	    keyword=> {
 	        if (keyword.trim() !== "") {
 	        	this.setState({loading:true});
@@ -52,6 +52,7 @@ export default class SearchDrugInput extends React.Component {
     }
 
     componentWillUnmount() {
+    	this.inputChangeDisposal.dispose();
         window.removeEventListener('focus', this._handleWindowClose, true);
         window.removeEventListener('click', this._handleWindowClose, false);
     }
@@ -66,25 +67,6 @@ export default class SearchDrugInput extends React.Component {
 	_handleSearchInputChange() {
 		let keyword = this.refs.drugSearchInput.getValue();
 		this.searchInputChangeEmitter.emit("change", keyword);
-		const tmp = [
-			{title: "james", id: "11111", weight: ""}, 
-			{title: "jason", id: "21111", weight: ""}, 
-			{title: "jakon", id: "3", weight: ""}, 
-			{title: "jaksone", id: "4", weight: ""}, 
-		]
-
-		
-		// let result = tmp.filter(item => item.title.indexOf(keyword) !== -1);
-		// 	// if (result.length > 0) {
-		// 	// 	this.setState({drugs:result, selectedIndex: 0});
-		// 	// } else {
-		// 	// 	this._close();
-		// 	// }
-			
-		// } else {
-		// 	this._close();
-		// }
-
 	}
 
 	_onKeyDown(event) {
@@ -142,6 +124,7 @@ export default class SearchDrugInput extends React.Component {
 		this.props.addDrugCB({
 			id: drug.id,
 			title: drug.title,
+			unit: drug.unit,
 		});
 		this._close();
 		this.refs.drugSearchInput.refs.input.value = "";

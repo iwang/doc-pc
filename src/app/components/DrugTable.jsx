@@ -9,12 +9,12 @@ export default class DrugTable extends React.Component {
 			rows.push(<DrugRow key={d.key} drug={d} model={this.props.model}/>);
 		});
 		return (
-			 <Table striped bordered condensed hover>
+			 <Table bordered condensed hover className="editDrugTable">
 			    <thead>
 			      <tr>
 			        <th>编码</th>
 			        <th>药材</th>
-			        <th>克数</th>
+			        <th>数量</th>
 			        <th>备注</th>
 			        <th>操作</th>
 			      </tr>

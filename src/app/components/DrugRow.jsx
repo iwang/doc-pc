@@ -10,9 +10,8 @@ export default class DrugRow extends React.Component {
 	getStyles() {
 		return {
 			weightInput: {
-				width: 40,
 				height: 25,
-				padding: "0px 5px",
+				padding: "0px 3px",
 				marginTop: 0,
 			},
 			optionSelect: {
@@ -47,11 +46,12 @@ export default class DrugRow extends React.Component {
 
 			<tr className="drug-row">
 				<td className="drug-id">{drug.id}</td>
-				<td>{drug.title}</td>
-				<td className="drug-weight"><Input ref="weightInput" type="text" value={drug.weight}
-				onBlur={this.weightInputBlur.bind(this)}
-				style={sty.weightInput} standalone onChange={this.weightChanged.bind(this)}/></td>
-				<td className="drug-comment editable">
+				<td className="edit drug-title">{drug.title}</td>
+				<td className="edit drug-weight">
+					<Input ref="weightInput" type="text" value={drug.weight}
+						onBlur={this.weightInputBlur.bind(this)}
+						style={sty.weightInput} standalone onChange={this.weightChanged.bind(this)}/></td>
+				<td className="edit drug-comment">
 					<Input ref="comment" value={drug.comment} type="select" style={sty.optionSelect} standalone placeholder="select"
 						onChange={this.commentChanged.bind(this)}>
 				      <option value="">备注</option>
@@ -62,7 +62,7 @@ export default class DrugRow extends React.Component {
 				    </Input>
 			    </td>
 				<td className="drug-op">
-					<Button bsSize="xsmall" onClick={evt=>this.props.model.deleteDrug(drug)}><Glyphicon glyph="remove" /></Button>
+					<a onClick={evt=>this.props.model.deleteDrug(drug)}>删除</a>
 				</td>
 			</tr>
 		);

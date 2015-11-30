@@ -8,6 +8,7 @@ import LoadingIcon from './LoadingIcon';
 
 export default class PrescriptionPreview extends React.Component {
 	submit() {
+
 		let param = {
 			receiver_name: this.props.name,
 			phone: this.props.phone,
@@ -21,13 +22,9 @@ export default class PrescriptionPreview extends React.Component {
 			receiver_gender: this.props.gender,
 			time_re: this.props.revistDuration,
 			type_id: this.props.type,
-			pack: ConvertionUtil.getPackName(this.props.type_id, this.props.pack),
+			pack: ConvertionUtil.getPackName(this.props.type, this.props.pack),
+			registration_fee: this.props.includeFee ? "1" : "0",
 		};
-
-		// only 膏方节 need pack info
-		if (param.type_id === "3") {
-			param.pack = this.props.pack;
-		}
 
 		this.setState({submitting: true});
 		$post("acrecipel/transfer", param, success=>{
@@ -46,22 +43,29 @@ export default class PrescriptionPreview extends React.Component {
 		return {
 			loading:true,
 			total: null,
+			money_doctor: null,
+			money_recipe: null,
 			valid: false,
 			submitting: false,
 			errorMsg: "",
 		};
 	}
-
+	//money_doctor: 0
+    //money_recipe: 0.34
+    //money_total: 0.34
 	onShow() {
 		$post("acrecipel/preview", {
 			amount: this.props.amount,
 			content: ConvertionUtil.drugsToJson(this.props.drugs),
 			phone: this.props.phone,
 			type_id: this.props.type,
+			registration_fee: this.props.includeFee ? "1" : "0",
 		}, success=>{
 			this.setState({
 				loading:false,
 				valid: true,
+				money_doctor: success.data.money_doctor,
+				money_recipe: success.data.money_recipe,
 				total: success.data.money_total,
 			});
 		}, fail=>{
@@ -79,27 +83,41 @@ export default class PrescriptionPreview extends React.Component {
 	}
 
 	render() {
-		let {name, phone, gender, age, diagnosis, decocted, symptom, decoctType, decoctComment, amount, type, drugs, revistDuration, showPreview} = this.props;
+		let {name, phone, gender, age, diagnosis, decocted, symptom, decoctType, decoctComment, amount, type, drugs, revistDuration, showPreview, includeFee, pack} = this.props;
 		let genderName = ConvertionUtil.getGenderName(gender);
 		let typeName = ConvertionUtil.getTypeName(type);
 		let decoctedName = decocted ? "代煎" : "";
-		let {loading, total, valid, errorMsg, submitting} = this.state;
+		let {loading, total, valid, errorMsg, submitting, money_doctor, money_recipe} = this.state;
 		decoctComment = ConvertionUtil.getDecoctComment(decoctType, decoctComment);
 
 		let errorFooter = null;
+		let feeFooter = null;
 		if (errorMsg !== "") {
 			errorFooter = <Row className="footer-row error">
 				    	<Col sm={12}>
 			          		{errorMsg}
 			          	</Col>
 		          	</Row>;
+		} else {
+			feeFooter = <Row className="footer-row">
+			<Col sm={3}>
+				<label>诊金:{money_doctor}元</label> 
+			</Col>
+			<Col sm={4}>
+				<label>药费:{money_recipe}元</label> 
+			</Col>
+			<Col sm={4}>
+				<label>总价:</label> <LoadingIcon loading={loading}/><span className="total"> {total}元</span>
+			</Col>
+			
+			</Row>
 		}
 
-		let totalFooter = null;
-		if (errorMsg === "") {
-			totalFooter = <Col sm={5}>
-							<label>总价:</label> <LoadingIcon loading={loading}/><span className="total"> {total}元</span>
-						</Col>;
+		let packUI = null;
+		if (ConvertionUtil.isGaoFangType(type)) {
+			packUI = <Col sm={6}>
+							<label>包装方式:</label> {pack}
+						</Col>
 		}
 
 		let submitLabel = submitting ? "提交中..." : "提交";
@@ -143,7 +161,7 @@ export default class PrescriptionPreview extends React.Component {
 						</Col>
 			    	</Row>
 		          
-		          <h4 className="section-title">处方建议：</h4>	
+		          <h4 className="section-title">用药建议：</h4>	
 		          <PrescriptionOverview drugs={drugs}/>
 		          
 		          	
@@ -166,12 +184,13 @@ export default class PrescriptionPreview extends React.Component {
 						
 			    	</Row>
 			    	<Row className="footer-row">
-			    		<Col sm={7}>
+			    		<Col sm={6}>
 							<label>煎服方式:</label> {decoctComment}
 						</Col>
-						{totalFooter}
+						{packUI}
 			    	</Row>
 			    	{errorFooter}
+			    	{feeFooter}
 		            <Button disabled={!valid || submitting} bsStyle="primary" className="submit" 
 		            	onClick={!submitting ? this.submit.bind(this) : null}>{submitLabel}</Button>
 		          </Modal.Footer>
